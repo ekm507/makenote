@@ -45,6 +45,14 @@ if len(sys.argv) > 1:
         except IndexError:
             exit(1)
 
+    # if you are commanded to show records
+    elif sys.argv[1] == '-show':
+        # see if table name is provided. if not, default shall be used
+        if len(sys.argv) > 2:
+            table_name = sys.argv[2]
+        # set action mode
+        action_mode = 'show records'
+
     else:
         # get note text from args if provided
         note_text = ' '.join(sys.argv[1:])
@@ -79,6 +87,19 @@ elif action_mode == 'create table':
     except sqlite3.OperationalError as error_text:
             print(error_text)
             exit(1)
+
+# if you are commanded to show records
+elif action_mode == 'show records':
+    try:
+        # get records from sqlite
+        records = cur.execute(f"SELECT * FROM {table_name};")
+        # print them all
+        for r in records:
+            print(r)
+    # if there was an error, print error text and exit
+    except sqlite3.OperationalError as error_text:
+        print(error_text)
+        exit(1)
 
 
 
