@@ -34,6 +34,17 @@ if len(sys.argv) > 1:
         else:
             # if note text is not provided in args, get it from stdin.
             note_text = ''.join(sys.stdin.readlines())[:-1]
+    # if you are commanded to create a table
+    elif sys.argv[1] == '-create':
+        try:
+            # get table name
+            table_name = sys.argv[2]
+            # program should create a table then.
+            action_mode = 'create table'
+        # if table name is not provided, then exit
+        except IndexError:
+            exit(1)
+
     else:
         # get note text from args if provided
         note_text = ' '.join(sys.argv[1:])
@@ -56,6 +67,20 @@ if action_mode == 'make note':
     except sqlite3.OperationalError as error_text:
         print(error_text)
         exit(1)
+
+# if you are commanded to create a table
+elif action_mode == 'create table':
+    try:
+        # create the table!
+        cur.execute(f'''CREATE TABLE IF NOT EXISTS {table_name}
+                    (date datetime, note text)''')
+        # tell the user it was successful
+        print(f'table {table_name} created!')
+    except sqlite3.OperationalError as error_text:
+            print(error_text)
+            exit(1)
+
+
 
 # commit all changes in the database so they are saved.
 con.commit()
