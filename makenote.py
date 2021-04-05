@@ -7,7 +7,6 @@ import datetime
 
 # database file is stored here.
 diaryFileName = f'{os.getenv("HOME")}/.diaryFile.db'
-
 # default table name
 default_table_name = 'journals'
 
@@ -23,16 +22,29 @@ con = sqlite3.connect(diaryFileName)
 cur = con.cursor()
 
 # get note text to write into database.
-try:
-    # get note text from args if provided
-    note_text = ' '.join(sys.argv[1:])
-except IndexError:
+if len(sys.argv) > 1:
+
+    # if note should be inserted into a specific table
+    if sys.argv[1][0] == '+':
+        # get table name
+        table_name = sys.argv[1][1:]
+        if len(sys.argv) > 2:
+            # get note text from args if provided
+            note_text = ' '.join(sys.argv[2:])
+        else:
+            # if note text is not provided in args, get it from stdin.
+            note_text = ''.join(sys.stdin.readlines())[:-1]
+    else:
+        # get note text from args if provided
+        note_text = ' '.join(sys.argv[1:])
+
+# if there is no args
+else:
     # if note text is not provided in args, get it from stdin.
     note_text = ''.join(sys.stdin.readlines())[:-1]
 
 # get date and time
 date_and_time = datetime.datetime.now()
-
 
 # if you are commanded to insert a note into database
 if action_mode == 'make note':
