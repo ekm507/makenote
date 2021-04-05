@@ -53,6 +53,10 @@ if len(sys.argv) > 1:
         # set action mode
         action_mode = 'show records'
 
+    # if you are commanded to list tables
+    elif sys.argv[1] == '-list':
+        action_mode = 'list tables'
+
     else:
         # get note text from args if provided
         note_text = ' '.join(sys.argv[1:])
@@ -97,6 +101,18 @@ elif action_mode == 'show records':
         for r in records:
             print(r)
     # if there was an error, print error text and exit
+    except sqlite3.OperationalError as error_text:
+        print(error_text)
+        exit(1)
+
+elif action_mode == 'list tables':
+    try:
+        # get list of tables
+        records = cur.execute('SELECT name from sqlite_master where type= "table"')
+        # print them
+        for r in records:
+            print(r[0])
+    # if there was an error, print error text and exit  
     except sqlite3.OperationalError as error_text:
         print(error_text)
         exit(1)
