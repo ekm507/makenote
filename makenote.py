@@ -74,6 +74,8 @@ if action_mode == 'make note':
     try:
         # insert (date, note) into database.
         cur.execute(f"INSERT INTO {table_name} VALUES ('{date_and_time}','{note_text}')")
+        # let user know it works
+        print(f'{datetime.datetime.ctime(date_and_time)} - {table_name} - note saved!')
 
     # if there is an error, print error text and exit.
     except sqlite3.OperationalError as error_text:
