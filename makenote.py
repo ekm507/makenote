@@ -11,6 +11,9 @@ diaryFileName = f'{os.getenv("HOME")}/.diaryFile.db'
 # default table name
 default_table_name = 'journals'
 
+# note will be added to this table
+table_name = default_table_name
+
 # this program can do a few things. action mode tells it what to do!
 action_mode = 'make note'
 
@@ -27,6 +30,23 @@ except IndexError:
     # if note text is not provided in args, get it from stdin.
     note_text = ''.join(sys.stdin.readlines())[:-1]
 
+# get date and time
+date_and_time = datetime.datetime.now()
 
+
+# if you are commanded to insert a note into database
 if action_mode == 'make note':
-    pass
+    try:
+        # insert (date, note) into database.
+        cur.execute(f"INSERT INTO {table_name} VALUES ('{date_and_time}','{note_text}')")
+
+    # if there is an error, print error text and exit.
+    except sqlite3.OperationalError as error_text:
+        print(error_text)
+        exit(1)
+
+# commit all changes in the database so they are saved.
+con.commit()
+
+# close the database file
+con.close()
