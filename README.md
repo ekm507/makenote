@@ -1,11 +1,6 @@
+[نسخه فارسی این سند](./fa.README.md)
 # makenote
 a command line tool for making diary or journals.
-
-<div dir="rtl">
-یک ابزار خط فرمان برای نوشتن یادداشت‌ها، نوشته‌های روزمره، گزارش‌کار و غیره.
-
-برای دیدن توضیحات فارسی به فایل [fa.README.md](./fa.README.md) نگاه کنید.
-</div>
 
 ## installation
 
