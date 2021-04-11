@@ -10,6 +10,9 @@ diaryFileName = f'{os.getenv("HOME")}/.diaryFile.db'
 # default table name
 default_table_name = 'journals'
 
+# this number is like an option for how the show record output is styled
+show_style = 1
+
 # note will be added to this table
 table_name = default_table_name
 
@@ -101,7 +104,17 @@ elif action_mode == 'show records':
         records = cur.execute(f"SELECT * FROM {table_name};")
         # print them all
         for r in records:
-            print(r)
+
+            # if style number 1 is selected
+            if show_style == 1:
+                # replace that utf representation of نیم‌فاصله with itself
+                r[1].replace('\u200c', ' ')
+                # remove miliseconds from date and time and print a in a stylized format
+                print(f'{r[0][:10]}   {r[0][10:18]}    {r[1]}')
+            # if no show style is specified
+            else:
+                # print in python default style of printing
+                print(r)
     # if there was an error, print error text and exit
     except sqlite3.OperationalError as error_text:
         print(error_text)
