@@ -4,6 +4,17 @@ a command line tool for making diary or journals.
 
 ## installation
 
+### pre-requirements
+
+first make sure dependancies for this tool are satisfied.  
+this tool needs sqlite3 to run. in debian based distributions, install it with this:
+
+```bash
+apt install sqlite3
+```
+
+### install
+
 first clone this repo :
 
 ```bash
