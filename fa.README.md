@@ -1,7 +1,5 @@
 [English](./README.md)
 
-<div dir="rtl">
-
 # ابزار خط فرمان makenote
 
 یک ابزار خط فرمان برای نوشتن یادداشت‌ها، نوشته‌های روزمره، گزارش‌کار و غیره.
@@ -14,32 +12,25 @@
 این برنامه از sqlite3 استقاده می‌کند. برای نصب آن در سیستم‌های دبیانی از این دستور استفاده کنید:
 
 
-<div dir="ltr">
 
 ```bash
 apt install sqlite3
 ```
-</div>
 
 ### نصب
 
 ابتدا این مخزن را کلون کنید:
 
-<div dir="ltr">
 
 ```bash
 git clone 'https://github.com/ekm507/makenote.git'
 ```
-</div>
 
 سپس فایل `install.sh` را با دسترسی روت اجرا کنید:
-
-<div dir="ltr">
 
 ```bash
 ./install.sh
 ```
-</div>
 
 ## استفاده
 
@@ -50,12 +41,10 @@ git clone 'https://github.com/ekm507/makenote.git'
 برای ایجاد یک جدول دستور خط فرمان زیر را اجرا کنید:
 
 
-<div dir="ltr">
 
 ```bash
 makenote -create <table_name>
 ```
-</div>
 
 ### افزودن یک یادداشت
 
@@ -63,44 +52,33 @@ makenote -create <table_name>
 
 اگر اسم جدول مشخص نشود، جدول پیشفرض با اسم journals استفاده خواهدشد.
 
-<div dir="ltr">
 
 ```bash
 makenote +<table_name> <note_text>
 ```
-</div>
 
 هم‌چنین این ابزار می‌تواند فرودی را به جای خط فرمان، از ورودی stdin دریافت کند. برای مثال می‌توانید از این ابزار به این شکل استفاده کنید:
 
-<div dir="ltr">
 
 ```bash
 echo "من این ابزار را نصب کردم" | makenote +journals
 ```
-</div>
 
 
 ### دیدن لیست جدول‌ها
 
 برای دیدن یک لیست از اسم جدول‌های ایجادشده، از این دستور استفاده کنید:
 
-<div dir="ltr">
 
 ```bash
 makenote -list
 ```
-</div>
 
 ### مشاهده یک جدول
 
 برای دیدن یادداشت‌های داخل یکی از جدول‌ها، از این دستور استفاده کنید:
 
-<div dir="ltr">
 
 ```bash
 makenote -show <table_name>
 ```
-</div>
-
-
-</div>
