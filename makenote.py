@@ -112,10 +112,8 @@ cur = con.cursor()
 
 if args.show:
     show_table(cur, args.show)
-    exit(0)
 elif args.list_tables:
     list_tables(cur)
-    exit(0)
 elif args.create_table:
     make_table(cur, args.create_table)
 elif args.default:
@@ -141,7 +139,6 @@ else:
         note_text = ''.join(sys.stdin.readlines())[:-1]
 
     add_note(cur, table_name, note_text)
-    # exit(0)
 
 # commit all changes in the database so they are saved.
 con.commit()
