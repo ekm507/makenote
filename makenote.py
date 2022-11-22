@@ -128,7 +128,12 @@ else:
 
     if not table_exists(cur, table_name):
         print(f'table {table_name} does not exist')
-        exit(1)
+        print('do you want to create it? (y/N)')
+        do_you_want_to_create = input()
+        if do_you_want_to_create.lower() in ['y', 'yes']:
+            make_table(cur, table_name)
+        else:
+            exit(1)
 
     if len(args.text) > 0:
         note_text = ' '.join(args.text)
@@ -136,7 +141,7 @@ else:
         note_text = ''.join(sys.stdin.readlines())[:-1]
 
     add_note(cur, table_name, note_text)
-    exit(0)
+    # exit(0)
 
 # commit all changes in the database so they are saved.
 con.commit()
