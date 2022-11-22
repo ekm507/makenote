@@ -87,7 +87,7 @@ def make_table(sqlite_cursor: sqlite3.Cursor, table_name):
 def list_tables(sqlite_cursor: sqlite3.Cursor):
     try:
         # get list of tables
-        records = cur.execute(
+        records = sqlite_cursor.execute(
             'SELECT name from sqlite_master where type= "table"')
         # print them
         for r in records:
