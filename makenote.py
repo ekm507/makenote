@@ -13,7 +13,7 @@ parser = argparse.ArgumentParser(prefix_chars='-', prog='makenote',
                                  formatter_class=argparse.RawDescriptionHelpFormatter,
                                  description='add notes to diary or show them',
                                  epilog='''examples:
-    makenote +journals it was a nice day today!
+    makenote -journals it was a nice day today!
     makenote -show journals''')
 
 parser.add_argument("-s", '--show', dest='show',
@@ -24,8 +24,8 @@ parser.add_argument("-c", '--create', dest='create_table',
                     help="create table", default=None)
 parser.add_argument("-l", '--list', dest='list_tables',
                     help="list tables", default=None, action="store_true")
-parser.add_argument("table_name",  help="+table for notes (starts with +)",
-                    default=default_table_name, nargs='?')
+parser.add_argument("-t", "--table",  help="table for notes",
+                    default=default_table_name)
 parser.add_argument("text",  help="text", default=None, nargs='*')
 
 args = parser.parse_args()
