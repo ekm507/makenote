@@ -78,6 +78,20 @@ def make_table(sqlite_cursor: sqlite3.Cursor, table_name):
         print(error_text)
         exit(1)
 
+def list_tables(sqlite_cursor: sqlite3.Cursor):
+    try:
+        # get list of tables
+        records = cur.execute(
+            'SELECT name from sqlite_master where type= "table"')
+        # print them
+        for r in records:
+            print(r[0])
+    # if there was an error, print error text and exit
+    except sqlite3.OperationalError as error_text:
+        print(error_text)
+        exit(1)
+
+
 
 # database file is stored here.
 diaryFileName = f'{os.getenv("HOME")}/.diaryFile.db'
@@ -95,7 +109,6 @@ action_mode = 'make note'
 con = sqlite3.connect(diaryFileName)
 # define a cursor to execute commands
 cur = con.cursor()
-
 # get note text to write into database.
 if len(sys.argv) > 1:
 
