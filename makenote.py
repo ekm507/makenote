@@ -1,14 +1,27 @@
 #!/usr/bin/python3
 import sys
-import time
 import os
 import sqlite3
 import datetime
+import argparse
 
-# database file is stored here.
-diaryFileName = f'{os.getenv("HOME")}/.diaryFile.db'
+
 # default table name
 default_table_name = 'journals'
+
+parser = argparse.ArgumentParser(prefix_chars='-', prog='makenote',
+                    description = 'add notes to diary or show them',
+                    epilog = '''example:
+                    makenote +journals it was a nice day today!''')
+
+parser.add_argument("-s", '--show', dest='show', help="table to show", default=None)
+parser.add_argument("-d", '--default', dest='default', help="set default table", default=None)
+parser.add_argument("table",  help="+table for notes (starts with +)", default=default_table_name, nargs='?')
+parser.add_argument("text",  help="text", default=None, nargs='*')
+
+args = parser.parse_args()
+# database file is stored here.
+diaryFileName = f'{os.getenv("HOME")}/.diaryFile.db'
 
 # this number is like an option for how the show record output is styled
 show_style = 1
