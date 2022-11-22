@@ -1,2 +1,2 @@
-sqlite3
+pysqlite3
 argparse
