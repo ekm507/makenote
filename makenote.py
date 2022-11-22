@@ -22,6 +22,38 @@ parser.add_argument("table",  help="+table for notes (starts with +)", default=d
 parser.add_argument("text",  help="text", default=None, nargs='*')
 
 args = parser.parse_args()
+
+
+def add_note(sqlite_cursor, table_name, note_text):
+
+    sqlite_cursor.execute(f"INSERT INTO {table_name} VALUES ('{date_and_time}','{note_text}')")
+
+    # let user know it works
+    print(f'{datetime.datetime.ctime(date_and_time)} - {table_name} - note saved!')
+
+def show_table(sqlite_cursor, table_name):
+    try:
+        # get records from sqlite
+        records = sqlite_cursor.execute(f"SELECT * FROM {table_name};")
+        # print them all
+        for r in records:
+
+            # if style number 1 is selected
+            if show_style == 2:
+                # replace that utf representation of نیم‌فاصله with itself
+                r[1].replace('\u200c', ' ')
+                # remove miliseconds from date and time and print a in a stylized format
+                print(f'{r[0][:10]}   {r[0][10:18]}    {r[1]}')
+            # if no show style is specified
+            else:
+                # print in python default style of printing
+                print(r)
+    # if there was an error, print error text and exit
+    except sqlite3.OperationalError as error_text:
+        print(error_text)
+        exit(1)
+
+
 # database file is stored here.
 diaryFileName = f'{os.getenv("HOME")}/.diaryFile.db'
 
