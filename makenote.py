@@ -20,6 +20,8 @@ parser.add_argument("-s", '--show', dest='show',
                     help="table to show", default=None)
 parser.add_argument("-d", '--default', dest='default',
                     help="set default table", default=None)
+parser.add_argument("-l", '--list', dest='list_tables',
+                    help="list tables", default=None, action="store_true")
 parser.add_argument("table_name",  help="+table for notes (starts with +)",
                     default=default_table_name, nargs='?')
 parser.add_argument("text",  help="text", default=None, nargs='*')
@@ -28,6 +30,8 @@ args = parser.parse_args()
 
 
 def add_note(sqlite_cursor, table_name, note_text):
+    
+    date_and_time = datetime.datetime.now()
 
     sqlite_cursor.execute(
         f"INSERT INTO {table_name} VALUES ('{date_and_time}','{note_text}')")
@@ -102,13 +106,29 @@ show_style = 1
 # note will be added to this table
 table_name = args.table_name
 
-# this program can do a few things. action mode tells it what to do!
-action_mode = 'make note'
-
 # connect to sqlite file
 con = sqlite3.connect(diaryFileName)
 # define a cursor to execute commands
 cur = con.cursor()
+
+if args.show:
+    show_table(cur, args.show)
+    exit(0)
+elif args.list_tables:
+    list_tables(cur)
+    exit(0)
+elif args.default:
+    default_table_name = args.default
+    table_name = args.default
+else:
+    if len(args.text) > 0:
+        note_text = ' '.join(args.text)
+    else:
+        note_text = ''.join(sys.stdin.readlines())[:-1]
+
+    add_note(cur, table_name, note_text)
+    exit(0)
+
 # get note text to write into database.
 if len(sys.argv) > 1:
 
