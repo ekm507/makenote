@@ -53,6 +53,25 @@ def show_table(sqlite_cursor, table_name):
         print(error_text)
         exit(1)
 
+def table_exists(sqlite_cursor: sqlite3.Cursor, table_name) -> bool:
+    query = 'SELECT name from sqlite_master where type= "table"'
+    # query = f"SELECT tableName FROM sqlite_master WHERE type='table' AND tableName='{table_name}';"
+    records = sqlite_cursor.execute(query)
+    # print([t for t in tables])
+    tables = [ record[0] for record in records]
+    return table_name in tables
+
+def make_table(sqlite_cursor: sqlite3.Cursor, table_name):
+    try:
+        # create the table!
+        sqlite_cursor.execute(f'''CREATE TABLE IF NOT EXISTS {table_name}
+                    (date datetime, note text)''')
+        # tell the user it was successful
+        print(f'table {table_name} created!')
+    except sqlite3.OperationalError as error_text:
+            print(error_text)
+            exit(1)
+
 
 # database file is stored here.
 diaryFileName = f'{os.getenv("HOME")}/.diaryFile.db'
