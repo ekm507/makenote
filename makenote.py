@@ -105,9 +105,6 @@ diaryFileName = f'{os.getenv("HOME")}/.diaryFile.db'
 # this number is like an option for how the show record output is styled
 show_style = 1
 
-# note will be added to this table
-table_name = args.table_name
-
 # connect to sqlite file
 con = sqlite3.connect(diaryFileName)
 # define a cursor to execute commands
@@ -125,6 +122,14 @@ elif args.default:
     default_table_name = args.default
     table_name = args.default
 else:
+
+    # note will be added to this table
+    table_name = args.table_name
+
+    if not table_exists(cur, table_name):
+        print(f'table {table_name} does not exist')
+        exit(1)
+
     if len(args.text) > 0:
         note_text = ' '.join(args.text)
     else:
