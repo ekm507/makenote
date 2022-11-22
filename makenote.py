@@ -24,7 +24,7 @@ parser.add_argument("-c", '--create', dest='create_table',
                     help="create table", default=None)
 parser.add_argument("-l", '--list', dest='list_tables',
                     help="list tables", default=None, action="store_true")
-parser.add_argument("-t", "--table",  help="table for notes",
+parser.add_argument("-t", "--table", dest="table_name", help="table for notes",
                     default=default_table_name)
 parser.add_argument("text",  help="text", default=None, nargs='*')
 
