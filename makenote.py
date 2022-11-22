@@ -10,15 +10,18 @@ import argparse
 default_table_name = 'journals'
 
 parser = argparse.ArgumentParser(prefix_chars='-', prog='makenote',
-                    formatter_class=argparse.RawDescriptionHelpFormatter, 
-                    description = 'add notes to diary or show them',
-                    epilog = '''examples:
+                                 formatter_class=argparse.RawDescriptionHelpFormatter,
+                                 description='add notes to diary or show them',
+                                 epilog='''examples:
     makenote +journals it was a nice day today!
     makenote -show journals''')
 
-parser.add_argument("-s", '--show', dest='show', help="table to show", default=None)
-parser.add_argument("-d", '--default', dest='default', help="set default table", default=None)
-parser.add_argument("table",  help="+table for notes (starts with +)", default=default_table_name, nargs='?')
+parser.add_argument("-s", '--show', dest='show',
+                    help="table to show", default=None)
+parser.add_argument("-d", '--default', dest='default',
+                    help="set default table", default=None)
+parser.add_argument("table_name",  help="+table for notes (starts with +)",
+                    default=default_table_name, nargs='?')
 parser.add_argument("text",  help="text", default=None, nargs='*')
 
 args = parser.parse_args()
@@ -26,10 +29,12 @@ args = parser.parse_args()
 
 def add_note(sqlite_cursor, table_name, note_text):
 
-    sqlite_cursor.execute(f"INSERT INTO {table_name} VALUES ('{date_and_time}','{note_text}')")
+    sqlite_cursor.execute(
+        f"INSERT INTO {table_name} VALUES ('{date_and_time}','{note_text}')")
 
     # let user know it works
     print(f'{datetime.datetime.ctime(date_and_time)} - {table_name} - note saved!')
+
 
 def show_table(sqlite_cursor, table_name):
     try:
@@ -58,8 +63,9 @@ def table_exists(sqlite_cursor: sqlite3.Cursor, table_name) -> bool:
     # query = f"SELECT tableName FROM sqlite_master WHERE type='table' AND tableName='{table_name}';"
     records = sqlite_cursor.execute(query)
     # print([t for t in tables])
-    tables = [ record[0] for record in records]
+    tables = [record[0] for record in records]
     return table_name in tables
+
 
 def make_table(sqlite_cursor: sqlite3.Cursor, table_name):
     try:
@@ -69,8 +75,8 @@ def make_table(sqlite_cursor: sqlite3.Cursor, table_name):
         # tell the user it was successful
         print(f'table {table_name} created!')
     except sqlite3.OperationalError as error_text:
-            print(error_text)
-            exit(1)
+        print(error_text)
+        exit(1)
 
 
 # database file is stored here.
@@ -80,7 +86,7 @@ diaryFileName = f'{os.getenv("HOME")}/.diaryFile.db'
 show_style = 1
 
 # note will be added to this table
-table_name = default_table_name
+table_name = args.table_name
 
 # this program can do a few things. action mode tells it what to do!
 action_mode = 'make note'
@@ -142,7 +148,8 @@ date_and_time = datetime.datetime.now()
 if action_mode == 'make note':
     try:
         # insert (date, note) into database.
-        cur.execute(f"INSERT INTO {table_name} VALUES ('{date_and_time}','{note_text}')")
+        cur.execute(
+            f"INSERT INTO {table_name} VALUES ('{date_and_time}','{note_text}')")
         # let user know it works
         print(f'{datetime.datetime.ctime(date_and_time)} - {table_name} - note saved!')
 
@@ -160,8 +167,8 @@ elif action_mode == 'create table':
         # tell the user it was successful
         print(f'table {table_name} created!')
     except sqlite3.OperationalError as error_text:
-            print(error_text)
-            exit(1)
+        print(error_text)
+        exit(1)
 
 # if you are commanded to show records
 elif action_mode == 'show records':
@@ -189,15 +196,15 @@ elif action_mode == 'show records':
 elif action_mode == 'list tables':
     try:
         # get list of tables
-        records = cur.execute('SELECT name from sqlite_master where type= "table"')
+        records = cur.execute(
+            'SELECT name from sqlite_master where type= "table"')
         # print them
         for r in records:
             print(r[0])
-    # if there was an error, print error text and exit  
+    # if there was an error, print error text and exit
     except sqlite3.OperationalError as error_text:
         print(error_text)
         exit(1)
-
 
 
 # commit all changes in the database so they are saved.
