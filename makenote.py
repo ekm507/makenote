@@ -20,6 +20,8 @@ parser.add_argument("-s", '--show', dest='show',
                     help="table to show", default=None)
 parser.add_argument("-d", '--default', dest='default',
                     help="set default table", default=None)
+parser.add_argument("-c", '--create', dest='create_table',
+                    help="create table", default=None)
 parser.add_argument("-l", '--list', dest='list_tables',
                     help="list tables", default=None, action="store_true")
 parser.add_argument("table_name",  help="+table for notes (starts with +)",
@@ -117,6 +119,8 @@ if args.show:
 elif args.list_tables:
     list_tables(cur)
     exit(0)
+elif args.create_table:
+    make_table(cur, args.create_table)
 elif args.default:
     default_table_name = args.default
     table_name = args.default
@@ -128,117 +132,6 @@ else:
 
     add_note(cur, table_name, note_text)
     exit(0)
-
-# get note text to write into database.
-if len(sys.argv) > 1:
-
-    # if note should be inserted into a specific table
-    if sys.argv[1][0] == '+':
-        # get table name
-        table_name = sys.argv[1][1:]
-        if len(sys.argv) > 2:
-            # get note text from args if provided
-            note_text = ' '.join(sys.argv[2:])
-        else:
-            # if note text is not provided in args, get it from stdin.
-            note_text = ''.join(sys.stdin.readlines())[:-1]
-    # if you are commanded to create a table
-    elif sys.argv[1] == '-create':
-        try:
-            # get table name
-            table_name = sys.argv[2]
-            # program should create a table then.
-            action_mode = 'create table'
-        # if table name is not provided, then exit
-        except IndexError:
-            exit(1)
-
-    # if you are commanded to show records
-    elif sys.argv[1] == '-show':
-        # see if table name is provided. if not, default shall be used
-        if len(sys.argv) > 2:
-            table_name = sys.argv[2]
-        # set action mode
-        action_mode = 'show records'
-
-    # if you are commanded to list tables
-    elif sys.argv[1] == '-list':
-        action_mode = 'list tables'
-
-    else:
-        # get note text from args if provided
-        note_text = ' '.join(sys.argv[1:])
-
-# if there is no args
-else:
-    # if note text is not provided in args, get it from stdin.
-    note_text = ''.join(sys.stdin.readlines())[:-1]
-
-# get date and time
-date_and_time = datetime.datetime.now()
-
-# if you are commanded to insert a note into database
-if action_mode == 'make note':
-    try:
-        # insert (date, note) into database.
-        cur.execute(
-            f"INSERT INTO {table_name} VALUES ('{date_and_time}','{note_text}')")
-        # let user know it works
-        print(f'{datetime.datetime.ctime(date_and_time)} - {table_name} - note saved!')
-
-    # if there is an error, print error text and exit.
-    except sqlite3.OperationalError as error_text:
-        print(error_text)
-        exit(1)
-
-# if you are commanded to create a table
-elif action_mode == 'create table':
-    try:
-        # create the table!
-        cur.execute(f'''CREATE TABLE IF NOT EXISTS {table_name}
-                    (date datetime, note text)''')
-        # tell the user it was successful
-        print(f'table {table_name} created!')
-    except sqlite3.OperationalError as error_text:
-        print(error_text)
-        exit(1)
-
-# if you are commanded to show records
-elif action_mode == 'show records':
-    try:
-        # get records from sqlite
-        records = cur.execute(f"SELECT * FROM {table_name};")
-        # print them all
-        for r in records:
-
-            # if style number 1 is selected
-            if show_style == 1:
-                # replace that utf representation of نیم‌فاصله with itself
-                r[1].replace('\u200c', ' ')
-                # remove miliseconds from date and time and print a in a stylized format
-                print(f'{r[0][:10]}   {r[0][10:18]}    {r[1]}')
-            # if no show style is specified
-            else:
-                # print in python default style of printing
-                print(r)
-    # if there was an error, print error text and exit
-    except sqlite3.OperationalError as error_text:
-        print(error_text)
-        exit(1)
-
-elif action_mode == 'list tables':
-    try:
-        # get list of tables
-        records = cur.execute(
-            'SELECT name from sqlite_master where type= "table"')
-        # print them
-        for r in records:
-            print(r[0])
-    # if there was an error, print error text and exit
-    except sqlite3.OperationalError as error_text:
-        print(error_text)
-        exit(1)
-
 
 # commit all changes in the database so they are saved.
 con.commit()
