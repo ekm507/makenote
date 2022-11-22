@@ -10,9 +10,11 @@ import argparse
 default_table_name = 'journals'
 
 parser = argparse.ArgumentParser(prefix_chars='-', prog='makenote',
+                    formatter_class=argparse.RawDescriptionHelpFormatter, 
                     description = 'add notes to diary or show them',
-                    epilog = '''example:
-                    makenote +journals it was a nice day today!''')
+                    epilog = '''examples:
+    makenote +journals it was a nice day today!
+    makenote -show journals''')
 
 parser.add_argument("-s", '--show', dest='show', help="table to show", default=None)
 parser.add_argument("-d", '--default', dest='default', help="set default table", default=None)
