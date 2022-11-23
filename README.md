@@ -2,6 +2,8 @@
 # makenote
 a command line tool for making diary or journals.
 
+[![asciicast](https://asciinema.org/a/eOzmHs0kk7qFZeuWyHE8HezaJ.svg)](https://asciinema.org/a/eOzmHs0kk7qFZeuWyHE8HezaJ)
+
 ## installation
 
 1. clone this repo and `cd` into it.
