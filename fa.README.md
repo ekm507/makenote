@@ -6,6 +6,11 @@
 
 ## نصب
 
+1. clone this repo and `cd` into it.
+2. run `install_local.sh`
+3. add `~/.local/bin` to `PATH` if needed.
+
+<!-- 
 ### پیش از نصب
 
 پیش از نصب مطمئن باشید نیازمندی‌های برنامه نصب شده‌است.  
@@ -30,7 +35,7 @@ git clone 'https://github.com/ekm507/makenote.git'
 
 ```bash
 ./install.sh
-```
+``` -->
 
 ## استفاده
 
