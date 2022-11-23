@@ -57,7 +57,7 @@ def show_table(sqlite_cursor, table_name):
                 print(f'{r[0][:10]}   {r[0][10:18]}    {r[1]}')
             
             elif show_style == 2:
-                print(f'\u001b[36m{r[0][:10]} {r[0][10:18]}\u001b[0m    {r[1]}')
+                print(f'\u001b[36m{r[0][:10]} {r[0][10:18]}\u001b[0m  {r[1]}')
 
             # if no show style is specified
             else:
