@@ -41,7 +41,7 @@ for example you can classify your notes in "journals", "tasks", "work", etc.
 
 to create a table, run this:
 ```bash
-makenote -create <table_name>
+makenote --create <table_name>
 ```
 in which `<table_name>` is the name of table you want to be created.
 
@@ -49,13 +49,13 @@ in which `<table_name>` is the name of table you want to be created.
 
 to add note to a specified table, run this:
 ```bash
-makenote +<table_name> <note_text>
+makenote -t <table_name> <note_text>
 ```
 in which note text is the note you want to be added.
 
 this tool can also get input from stdin. so you can add notes like this:
 ```bash
-echo "I installed makenote tool" | makenote +journals
+echo "I installed makenote tool" | makenote --table journals
 ```
 
 if you do not specify table_name, then note will be stored in default table which is `journals`.
@@ -64,13 +64,13 @@ if you do not specify table_name, then note will be stored in default table whic
 
 to get a list of tables you have created, run this:
 ```bash
-makenote -list
+makenote --list
 ```
 
 ### showing records
 
 to see the notes you have stored in a table, run this:
 ```bash
-makenote -show <table_name>
+makenote --show <table_name>
 ```
-if you do not specify table_name, the default table will be shown.
+<!-- if you do not specify table_name, the default table will be shown. -->
