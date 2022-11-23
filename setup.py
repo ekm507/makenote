@@ -1,4 +1,5 @@
 import setuptools
+from makenote import __version__
 
 with open("README.md") as readme:
     long_description = readme.read()
