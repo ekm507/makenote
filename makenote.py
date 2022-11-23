@@ -50,11 +50,15 @@ def show_table(sqlite_cursor, table_name):
         for r in records:
 
             # if style number 1 is selected
-            if show_style == 2:
+            if show_style == 1:
                 # replace that utf representation of نیم‌فاصله with itself
                 r[1].replace('\u200c', ' ')
                 # remove miliseconds from date and time and print a in a stylized format
                 print(f'{r[0][:10]}   {r[0][10:18]}    {r[1]}')
+            
+            elif show_style == 2:
+                print(f'\u001b[36m{r[0][:10]} {r[0][10:18]}\u001b[0m    {r[1]}')
+
             # if no show style is specified
             else:
                 # print in python default style of printing
@@ -103,7 +107,7 @@ def list_tables(sqlite_cursor: sqlite3.Cursor):
 diaryFileName = f'{os.getenv("HOME")}/.diaryFile.db'
 
 # this number is like an option for how the show record output is styled
-show_style = 1
+show_style = 2
 
 # connect to sqlite file
 con = sqlite3.connect(diaryFileName)
