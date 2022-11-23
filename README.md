@@ -4,6 +4,12 @@ a command line tool for making diary or journals.
 
 ## installation
 
+1. clone this repo and `cd` into it.
+2. run `install_local.sh`
+3. add `~/.local/bin` to `PATH` if needed.
+
+
+<!-- old method
 ### pre-requirements
 
 first make sure dependancies for this tool are satisfied.  
@@ -24,7 +30,7 @@ git clone 'https://github.com/ekm507/makenote.git'
 then run `install.sh` as __root__ :
 ```bash
 ./install.sh
-```
+``` -->
 
 ## usage
 
