@@ -13,7 +13,7 @@ parser = argparse.ArgumentParser(prefix_chars='-', prog='makenote',
                                  formatter_class=argparse.RawDescriptionHelpFormatter,
                                  description='add notes to diary or show them',
                                  epilog='''examples:
-    makenote -journals it was a nice day today!
+    makenote -t journals it was a nice day today!
     makenote -show journals''')
 
 parser.add_argument("-s", '--show', dest='show',
