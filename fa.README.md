@@ -48,7 +48,7 @@ git clone 'https://github.com/ekm507/makenote.git'
 
 
 ```bash
-makenote -create <table_name>
+makenote --create <table_name>
 ```
 
 ### افزودن یک یادداشت
@@ -59,14 +59,14 @@ makenote -create <table_name>
 
 
 ```bash
-makenote +<table_name> <note_text>
+makenote -t <table_name> <note_text>
 ```
 
 هم‌چنین این ابزار می‌تواند فرودی را به جای خط فرمان، از ورودی stdin دریافت کند. برای مثال می‌توانید از این ابزار به این شکل استفاده کنید:
 
 
 ```bash
-echo "من این ابزار را نصب کردم" | makenote +journals
+echo "من این ابزار را نصب کردم" | makenote --table journals
 ```
 
 
@@ -76,7 +76,7 @@ echo "من این ابزار را نصب کردم" | makenote +journals
 
 
 ```bash
-makenote -list
+makenote --list
 ```
 
 ### مشاهده یک جدول
@@ -85,5 +85,7 @@ makenote -list
 
 
 ```bash
-makenote -show <table_name>
+makenote --show <table_name>
 ```
+
+
