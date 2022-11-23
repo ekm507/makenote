@@ -110,8 +110,12 @@ def list_tables(sqlite_cursor: sqlite3.Cursor):
 # database file is stored here.
 diaryFileName = f'{os.getenv("HOME")}/.diaryFile.db'
 
-# this number is like an option for how the show record output is styled
-show_style = 2
+r, w = os.pipe()
+if os.isatty(r) == True:
+    # this number is like an option for how the show record output is styled
+    show_style = 2
+else:
+    show_style = 1
 
 # connect to sqlite file
 con = sqlite3.connect(diaryFileName)
