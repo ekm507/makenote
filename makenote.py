@@ -39,7 +39,11 @@ def add_note(sqlite_cursor, table_name, note_text):
         f"INSERT INTO {table_name} VALUES ('{date_and_time}','{note_text}')")
 
     # let user know it works
-    print(f'{datetime.datetime.ctime(date_and_time)} - {table_name} - note saved!')
+    if show_style == 1:
+        print(f'{datetime.datetime.ctime(date_and_time)} - {table_name} - note saved!')
+    elif show_style == 2:
+        print(f'\u001b[36m{datetime.datetime.ctime(date_and_time)}\u001b[0m - {table_name} - note saved!')
+
 
 
 def show_table(sqlite_cursor, table_name):
