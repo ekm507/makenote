@@ -18,8 +18,8 @@ parser = argparse.ArgumentParser(prefix_chars='-', prog='makenote',
 
 parser.add_argument("-s", '--show', dest='show',
                     help="table to show", nargs='?', const=default_table_name)
-parser.add_argument("-d", '--default', dest='default',
-                    help="set default table", default=None)
+# parser.add_argument("-d", '--default', dest='default',
+#                     help="set default table", default=None)
 parser.add_argument("-c", '--create', dest='create_table',
                     help="create table", default=None)
 parser.add_argument("-l", '--list', dest='list_tables',
