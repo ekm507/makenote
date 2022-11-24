@@ -56,20 +56,10 @@ then run `install.sh` as __root__ :
 ./install.sh
 ``` -->
 
-## usage
+# usage
 
-### creating tables
 
-this tool uses different tables for storing notes.  
-for example you can classify your notes in "journals", "tasks", "work", etc.
-
-to create a table, run this:
-```bash
-makenote --create <table_name>
-```
-in which `<table_name>` is the name of table you want to be created.
-
-### adding notes
+## adding notes
 
 to add note to a specified table, run this:
 ```bash
@@ -84,14 +74,27 @@ echo "I installed makenote tool" | makenote --table journals
 
 if you do not specify table_name, then note will be stored in default table which is `journals`.
 
-### listing tables
+
+
+## creating tables
+
+this tool uses different tables for storing notes.  
+for example you can classify your notes in "journals", "tasks", "work", etc.
+
+to create a table, run this:
+```bash
+makenote --create <table_name>
+```
+in which `<table_name>` is the name of table you want to be created.
+
+## listing tables
 
 to get a list of tables you have created, run this:
 ```bash
 makenote --list
 ```
 
-### showing records
+## showing records
 
 to see the notes you have stored in a table, run this:
 ```bash
