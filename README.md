@@ -1,10 +1,26 @@
 [نسخه فارسی این سند](./fa.README.md)
-# makenote
+
+makenote
+---
+
 a command line tool for making diary or journals.
 
 [![asciicast](https://asciinema.org/a/eOzmHs0kk7qFZeuWyHE8HezaJ.svg)](https://asciinema.org/a/eOzmHs0kk7qFZeuWyHE8HezaJ)
 
-## installation
+# installation
+
+## using pip
+
+## using pip but build it yourself
+
+```bash
+pip install setuptools wheel
+git clone 'https://github.com/ekm507/makenote'
+cd makenote
+python3 setup.py bdist_wheel
+pip install ./dist/*.whl
+```
+
 
 1. clone this repo and `cd` into it.
 2. run `install_local.sh`
