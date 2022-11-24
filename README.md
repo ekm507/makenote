@@ -104,6 +104,14 @@ makenote --list
 
 to see the notes you have stored in a table, run this:
 ```bash
-makenote --show <table_name>
+makenote --show [<table_name>]
 ```
-<!-- if you do not specify table_name, the default table will be shown. -->
+if you do not specify table_name, the default table will be shown.
+
+## getting help
+
+run:
+
+```bash
+makenote -h
+```
