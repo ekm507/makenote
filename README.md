@@ -63,9 +63,15 @@ then run `install.sh` as __root__ :
 
 to add note to a specified table, run this:
 ```bash
-makenote -t <table_name> <note_text>
+makenote [-t <table_name>] <note_text>
 ```
+
 in which note text is the note you want to be added.
+
+for example:
+```bash
+makenote I am reading page 754 of the book
+```
 
 this tool can also get input from stdin. so you can add notes like this:
 ```bash
