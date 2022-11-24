@@ -9,7 +9,16 @@ a command line tool for making diary or journals.
 
 # installation
 
+there are a few methods for installation
+
 ## using pip
+easiest way is to install it using pip:
+
+```bash
+pip install makenote
+```
+
+## build for pip
 
 1. build the package
 
