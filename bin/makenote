@@ -127,9 +127,9 @@ elif args.list_tables:
     list_tables(cur)
 elif args.create_table:
     make_table(cur, args.create_table)
-elif args.default:
-    default_table_name = args.default
-    table_name = args.default
+# elif args.default:
+#     default_table_name = args.default
+#     table_name = args.default
 else:
 
     # note will be added to this table
