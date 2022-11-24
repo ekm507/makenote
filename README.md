@@ -11,16 +11,22 @@ a command line tool for making diary or journals.
 
 ## using pip
 
-## using pip but build it yourself
+1. build the package
 
 ```bash
 pip install setuptools wheel
 git clone 'https://github.com/ekm507/makenote'
 cd makenote
 python3 setup.py bdist_wheel
+
+```
+
+2. install the package
+```bash
 pip install ./dist/*.whl
 ```
 
+## without pip (old method)
 
 1. clone this repo and `cd` into it.
 2. run `install_local.sh`
