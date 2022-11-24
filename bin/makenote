@@ -147,7 +147,10 @@ else:
     if len(args.text) > 0:
         note_text = ' '.join(args.text)
     else:
-        note_text = ''.join(sys.stdin.readlines())[:-1]
+        try:
+            note_text = ''.join(sys.stdin.readlines())[:-1]
+        except KeyboardInterrupt:
+            exit(1)
 
     add_note(cur, table_name, note_text)
 
