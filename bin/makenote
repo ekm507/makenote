@@ -36,7 +36,7 @@ def add_note(sqlite_cursor, table_name, note_text):
     date_and_time = datetime.datetime.now()
 
     sqlite_cursor.execute(
-        f"INSERT INTO {table_name} VALUES ('{date_and_time}','{note_text}')")
+        f"INSERT INTO {table_name} VALUES (?, ?)", (date_and_time, note_text))
 
     # let user know it works
     if show_style == 1:
