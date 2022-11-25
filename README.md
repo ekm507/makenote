@@ -14,9 +14,12 @@ there are a few methods for installation
 ## using pip
 easiest way is to install it using pip:
 
+1. install package
 ```bash
 pip install makenote
 ```
+
+2. add `~/.local/bin` to path if needed
 
 ## build for pip
 
