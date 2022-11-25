@@ -9,6 +9,9 @@ import argparse
 # default table name
 default_table_name = 'journals'
 
+# database file is stored here.
+diaryFileName = f'{os.getenv("HOME")}/.diaryFile.db'
+
 parser = argparse.ArgumentParser(prefix_chars='-', prog='makenote',
                                  formatter_class=argparse.RawDescriptionHelpFormatter,
                                  description='add notes to diary or show them',
@@ -106,9 +109,6 @@ def list_tables(sqlite_cursor: sqlite3.Cursor):
         exit(1)
 
 
-
-# database file is stored here.
-diaryFileName = f'{os.getenv("HOME")}/.diaryFile.db'
 
 if sys.stdout.isatty() == True:
     # this number is like an option for how the show record output is styled
