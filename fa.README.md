@@ -90,7 +90,12 @@ makenote --create <table_name>
 
 
 ```bash
-makenote -t <table_name> <note_text>
+makenote [-t <table_name>] <note_text>
+```
+
+مثال:
+```bash
+makenote این یادداشت را ذخیره کن
 ```
 
 هم‌چنین این ابزار می‌تواند ورودی را به جای خط فرمان، از ورودی stdin دریافت کند. برای مثال می‌توانید از این ابزار به این شکل استفاده کنید:
