@@ -12,6 +12,7 @@ default_table_name = 'journals'
 # database file is stored here.
 diaryFileName = f'{os.getenv("HOME")}/.diaryFile.db'
 
+
 parser = argparse.ArgumentParser(prefix_chars='-', prog='makenote',
                                  formatter_class=argparse.RawDescriptionHelpFormatter,
                                  description='add notes to diary or show them',
@@ -116,6 +117,7 @@ if sys.stdout.isatty() == True:
 else:
     show_style = 1
 
+os.makedirs(os.path.dirname(diaryFileName), exist_ok=True)
 # connect to sqlite file
 con = sqlite3.connect(diaryFileName)
 # define a cursor to execute commands
