@@ -6,9 +6,9 @@
 
 ## نصب
 
-1. clone this repo and `cd` into it.
-2. run `install_local.sh`
-3. add `~/.local/bin` to `PATH` if needed.
+1. این مخزن را بارگیری کنید و وارد آن شوید.
+2. اسکریپت مقابل را اجرا کنید تا برنامه نصب شود: `install_local.sh`
+3. در صورتی که پیش از این انجام نداده‌اید، مسیر `~/.local/bin` را به مسیر فایل‌های اجرایی اضافه کنید. ([help](https://linuxize.com/post/how-to-add-directory-to-path-in-linux/))
 
 <!-- 
 ### پیش از نصب
