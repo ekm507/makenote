@@ -23,6 +23,24 @@ pip install makenote
 2. اسکریپت مقابل را اجرا کنید تا برنامه نصب شود: `install_local.sh`
 3. در صورتی که پیش از این انجام نداده‌اید، مسیر `~/.local/bin` را به مسیر فایل‌های اجرایی اضافه کنید. ([راهنما](https://linuxize.com/post/how-to-add-directory-to-path-in-linux/))
 
+## بیلد کردن مخزن برای مدیربستهٔ پایتون
+
+مشابه بسیاری از مخزن‌های پایتونی دیگر عمل کنید.
+1. بیلد کردن
+```bash
+pip install setuptools wheel
+git clone 'https://github.com/ekm507/makenote'
+cd makenote
+python3 setup.py bdist_wheel
+```
+
+2. نصب
+```bash
+pip install dist/*.whl
+```
+
+
+
 <!-- 
 ### پیش از نصب
 
