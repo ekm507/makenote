@@ -127,3 +127,12 @@ run:
 ```bash
 makenote -h
 ```
+
+# export all notes
+database file is stored in path below:
+
+`~/.local/share/makenote/databases/diaryFile.db`
+
+for backing notes up, just copy the file into somewhere.
+
+for restoring, just copy the `diaryFile.db` into the path.
