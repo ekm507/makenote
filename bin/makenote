@@ -10,8 +10,7 @@ import argparse
 default_table_name = 'journals'
 
 # database file is stored here.
-diaryFileName = f'{os.getenv("HOME")}/.diaryFile.db'
-
+diaryFileName = f'{os.getenv("HOME")}/.local/share/makenote/databases/diaryFile.db'
 
 parser = argparse.ArgumentParser(prefix_chars='-', prog='makenote',
                                  formatter_class=argparse.RawDescriptionHelpFormatter,
