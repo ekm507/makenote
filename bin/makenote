@@ -121,7 +121,6 @@ def merge_databases(cursor1:sqlite3.Cursor, cursor2:sqlite3.Cursor, cursor_out:s
 
     def merge_tables(cursor1:sqlite3.Cursor, cursor2:sqlite3.Cursor, cursor_out:sqlite3.Cursor, table_name):
 
-        print(table_name)
 
         table_1 = cursor1.execute(f"select * from {table_name};").fetchall()
         table_2 = cursor2.execute(f"select * from {table_name};").fetchall()
@@ -138,6 +137,9 @@ def merge_databases(cursor1:sqlite3.Cursor, cursor2:sqlite3.Cursor, cursor_out:s
                 else:
                     break
             table_out.append(entry_1)
+        for entry_2 in table_2[last_index_table2:]:
+            table_out.append(entry_2)
+
 
         cursor_out.execute(f'''CREATE TABLE IF NOT EXISTS {table_name} (date datetime, note text)''')
         for entry in table_out:
@@ -146,12 +148,11 @@ def merge_databases(cursor1:sqlite3.Cursor, cursor2:sqlite3.Cursor, cursor_out:s
 
     tables_1 = cursor1.execute('SELECT name from sqlite_master where type= "table"').fetchall()
     tables_2 = cursor2.execute('SELECT name from sqlite_master where type= "table"').fetchall()
-
     for table_name in tables_1:
         if table_name in tables_2:
             merge_tables(cursor1, cursor2, cursor_out, table_name[0])
-    else:
-        add_table(cursor1, cursor_out, table_name[0])
+        else:
+            add_table(cursor1, cursor_out, table_name[0])
     
     for table_name in tables_2:
         if table_name not in tables_1:
@@ -164,22 +165,23 @@ def merge_databases_by_name(firstdb_filename:str, seconddb_filename:str, outdb_f
     cur1 = con1.cursor()
 
     con2 = sqlite3.connect(seconddb_filename)
-    cur2 = con1.cursor()
+    cur2 = con2.cursor()
 
     con3 = sqlite3.connect(outdb_filename)
-    curo = con1.cursor()
+    curo = con3.cursor()
 
     merge_databases(cur1, cur2, curo)
 
-    con1.commit()
-    con1.close()
+    # con1.commit()
+    # con1.close()
 
-    con2.commit()
-    con2.close()
+    # con2.commit()
+    # con2.close()
     
     con3.commit()
     con3.close()
 
+    print('done merging databases')
 
 
 if sys.stdout.isatty() == True:
