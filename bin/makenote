@@ -20,7 +20,7 @@ parser = argparse.ArgumentParser(prefix_chars='-', prog='makenote',
     makenote -show journals''')
 
 parser.add_argument("-s", '--show', dest='show',
-                    help="table to show", nargs='?', const=default_table_name)
+                    help="table to show", nargs='?', const=default_table_name, metavar='TABLE_NAME')
 # parser.add_argument("-d", '--default', dest='default',
 #                     help="set default table", default=None)
 parser.add_argument("-c", '--create', dest='create_table',
