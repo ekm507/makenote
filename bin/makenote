@@ -4,7 +4,7 @@ import os
 import sqlite3
 import datetime
 import argparse
-
+import shutil
 
 # default table name
 default_table_name = 'journals'
@@ -204,6 +204,9 @@ elif args.list_tables:
     list_tables(cur)
 elif args.create_table:
     make_table(cur, args.create_table)
+elif args.export:
+    shutil.copy(diaryFileName, args.export)
+    print(f'exported to {os.path.realpath(args.export)}')
 elif args.merge:
     firstdb, seconddb, outdb = args.merge
     merge_databases_by_name(firstdb, seconddb, outdb)
