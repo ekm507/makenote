@@ -31,6 +31,8 @@ parser.add_argument("-t", "--table", dest="table_name", help="table for notes",
                     default=default_table_name)
 parser.add_argument("-m", "--merge",  help="merge two databases",
                     default=None, nargs=3, metavar=('FIRST','SECOND','OUTPUT'))
+parser.add_argument("-x", "--export",  help="export database into file",
+                    default=None, metavar='FILENAME')
 parser.add_argument("text",  help="text", default=None, nargs='*')
 
 args = parser.parse_args()
