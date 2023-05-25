@@ -14,7 +14,7 @@ setuptools.setup(
     author_email="ekm507@gmail.com",
     keywords="makenote",
     url="https://github.com/ekm507/makenote",
-    install_requires=["argparse", "pysqlite3"],
+    install_requires=["argparse",],
     classifiers=[],
     packages=["makenote"],
     package_dir={"makenote": "makenote"},
