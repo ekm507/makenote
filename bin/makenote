@@ -60,10 +60,11 @@ def add_note(sqlite_cursor, table_name, note_text):
 
 def update_entry(sqlite_cursor, table_name, note_id: int, note_text: str) -> None:
     try:
-        # get records from sqlite
-        records = sqlite_cursor.execute(f"SELECT * FROM {table_name} LIMIT {note_id - 1}, 1;")
-        for r in records:
-            print(f"entry {note_id} with text \"{r[1]}\" updated")
+        # get the record from sqlite
+        sqlite_cursor.execute(f"SELECT * FROM {table_name} LIMIT {note_id - 1}, 1;")
+        record = sqlite_cursor.fetchone()
+        
+        print(f"entry {note_id} with text \"{record[1]}\" updated")
 
         cur.execute(f"""UPDATE {table_name} SET note = "{note_text}" LIMIT {note_id-1},{1};""")
 
@@ -75,7 +76,7 @@ def update_entry(sqlite_cursor, table_name, note_id: int, note_text: str) -> Non
 def tail_show_table(sqlite_cursor, table_name, limit):
     try:
         # get records from sqlite
-        a = sqlite_cursor.execute(f"SELECT count(*) FROM {table_name}")
+        sqlite_cursor.execute(f"SELECT count(*) FROM {table_name}")
         N = sqlite_cursor.fetchone()[0]
         records = sqlite_cursor.execute(f"SELECT * FROM {table_name} LIMIT {N - limit}, {limit};")
         # print them all
