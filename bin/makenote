@@ -11,6 +11,7 @@ default_table_name = 'journals'
 
 # database file is stored here.
 diaryFileName = f'{os.getenv("HOME")}/.local/share/makenote/databases/diaryFile.db'
+diaryFileName = f'./1.db'
 
 parser = argparse.ArgumentParser(prefix_chars='-', prog='makenote',
                                  formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -35,6 +36,9 @@ parser.add_argument("-x", "--export",  help="export database into file",
                     default=None, metavar='FILENAME')
 parser.add_argument("text",  help="text", default=None, nargs='*')
 
+parser.add_argument("-u", "--update",  help="edit note. add entry number",
+                    default=None, metavar='note_id', type=int)
+
 args = parser.parse_args()
 
 def add_note(sqlite_cursor, table_name, note_text):
@@ -51,13 +55,29 @@ def add_note(sqlite_cursor, table_name, note_text):
         print(f'\u001b[36m{datetime.datetime.ctime(date_and_time)}\u001b[0m - {table_name} - note saved!')
 
 
+def update_entry(sqlite_cursor, table_name, note_id: int, note_text: str) -> None:
+    try:
+        # get records from sqlite
+        records = sqlite_cursor.execute(f"SELECT * FROM {table_name} LIMIT {note_id - 1}, 1;")
+        for r in records:
+            print(f"entry {note_id} with text \"{r[1]}\" updated")
+
+        cur.execute(f"""UPDATE {table_name} SET note = "{note_text}" LIMIT {note_id-1},{1};""")
+
+    except sqlite3.OperationalError as error_text:
+        print(error_text)
+        exit(1)
+
 
 def show_table(sqlite_cursor, table_name):
     try:
         # get records from sqlite
         records = sqlite_cursor.execute(f"SELECT * FROM {table_name};")
         # print them all
+        i = 0
         for r in records:
+            i += 1
+            print(i, end="  ")
 
             # if style number 1 is selected
             if show_style == 1:
@@ -213,6 +233,7 @@ elif args.merge:
 # elif args.default:
 #     default_table_name = args.default
 #     table_name = args.default
+
 else:
 
     # note will be added to this table
@@ -235,7 +256,10 @@ else:
         except KeyboardInterrupt:
             exit(1)
 
-    add_note(cur, table_name, note_text)
+    if args.update:
+        update_entry(cur, args.table_name, args.update, note_text)
+    else:
+        add_note(cur, table_name, note_text)
 
 # commit all changes in the database so they are saved.
 con.commit()
