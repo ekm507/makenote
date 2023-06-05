@@ -82,7 +82,7 @@ def tail_show_table(sqlite_cursor, table_name, limit):
         N = sqlite_cursor.fetchone()[0]
         records = sqlite_cursor.execute(f"SELECT * FROM {table_name} LIMIT {N - limit}, {limit};")
         # print them all
-        i = 0
+        i = N - limit 
         for r in records:
             i += 1
             print(i, end="  ")
