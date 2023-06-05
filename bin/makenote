@@ -246,6 +246,13 @@ def merge_databases_by_name(firstdb_filename:str, seconddb_filename:str, outdb_f
     print('done merging databases')
 
 
+def import_database(db_filename: str, outdb_filename:str):
+
+    merge_databases_by_name(outdb_filename, db_filename, outdb_filename)
+    print('done importing your database')
+
+
+
 if sys.stdout.isatty() == True:
     # this number is like an option for how the show record output is styled
     show_style = 2
