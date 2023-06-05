@@ -214,6 +214,12 @@ def merge_databases(cursor1:sqlite3.Cursor, cursor2:sqlite3.Cursor, cursor_out:s
         if table_name not in tables_1:
             add_table(cursor2, cursor_out, table_name[0])
 
+def sql_to_csv(sqlite_cursor: sqlite3.Cursor):
+    records = sqlite_cursor.execute(
+        'SELECT name from sqlite_master where type= "table"')
+    # print them
+    tables = [r[0] for r in records]
+    
 
 def merge_databases_by_name(firstdb_filename:str, seconddb_filename:str, outdb_filename:str):
 
