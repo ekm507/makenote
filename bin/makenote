@@ -168,6 +168,29 @@ def list_tables(sqlite_cursor: sqlite3.Cursor):
         print(error_text)
         exit(1)
 
+def export_database_json(sqlite_cursor: sqlite3.Cursor, output_filename:str):
+    try:
+        # get list of tables
+        records = sqlite_cursor.execute(
+            'SELECT name from sqlite_master where type= "table"')
+        # print them
+        tables = [r[0] for r in records]
+        import json
+        all_data = {}
+        for table in tables:
+            table_data = sqlite_cursor.execute(f"select * from {table};").fetchall()
+            all_data[table] = table_data
+        
+        print(json.dumps(all_data, ensure_ascii=False))
+
+
+
+    # if there was an error, print error text and exit
+    except sqlite3.OperationalError as error_text:
+        print(error_text)
+        exit(1)
+
+
 def merge_databases(cursor1:sqlite3.Cursor, cursor2:sqlite3.Cursor, cursor_out:sqlite3.Cursor):
 
     def add_table(cursor_in, cursor_out, table_name):
