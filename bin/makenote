@@ -44,7 +44,11 @@ parser.add_argument("text",  help="text", default=None, nargs='*')
 parser.add_argument("-u", "--update",  help="edit note. add entry number",
                     default=None, metavar='note_id', type=int)
 
+parser.add_argument("-e", "--editor",  help="edit using your text editor",
+                    action="store_true", default=False)
+
 args = parser.parse_args()
+
 
 def add_note(sqlite_cursor, table_name, note_text):
     
@@ -328,7 +332,11 @@ else:
 
     if len(args.text) > 0:
         note_text = ' '.join(args.text)
+    elif args.editor == True:
+        print('use editor not implemented yet.')
+        exit(2)
     else:
+            
         try:
             note_text = ''.join(sys.stdin.readlines())[:-1]
         except KeyboardInterrupt:
