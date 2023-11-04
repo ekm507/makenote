@@ -281,6 +281,11 @@ def import_database(db_filename: str, outdb_filename:str):
     merge_databases_by_name(outdb_filename, db_filename, outdb_filename)
     print('done importing your database')
 
+def get_text_from_editor(previous_text:str=''):
+    tempfile_name = '/tmp/makenote_entry.txt'
+    open(tempfile_name, 'w').write(previous_text)
+    os.system(f'{os.environ.get("EDITOR", "vi")} {tempfile_name}')
+    return open(tempfile_name).read()
 
 
 if sys.stdout.isatty() == True:
@@ -333,8 +338,7 @@ else:
     if len(args.text) > 0:
         note_text = ' '.join(args.text)
     elif args.editor == True:
-        print('use editor not implemented yet.')
-        exit(2)
+        note_text = get_text_from_editor()
     else:
             
         try:
