@@ -19,6 +19,12 @@ easiest way is to install it using pip:
 pip install makenote
 ```
 
+for some new Gnu distros you need to use `pipx`.
+
+```bash
+pipx install makenote
+```
+
 2. add `~/.local/bin` to path if needed. ([help](https://linuxize.com/post/how-to-add-directory-to-path-in-linux/))
 
 ## build for pip
