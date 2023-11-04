@@ -78,6 +78,15 @@ def update_entry(sqlite_cursor, table_name, note_id: int, note_text: str) -> Non
         print(error_text)
         exit(1)
 
+def get_note(sqlite_cursor, table_name, note_id: int):
+    try:
+        # get the record from sqlite
+        sqlite_cursor.execute(f"SELECT * FROM {table_name} LIMIT {note_id - 1}, 1;")
+        record = sqlite_cursor.fetchone()
+        return record
+    except sqlite3.OperationalError as error_text:
+        print(error_text)
+        exit(1)
 
 def tail_show_table(sqlite_cursor, table_name, limit):
     try:
@@ -338,7 +347,11 @@ else:
     if len(args.text) > 0:
         note_text = ' '.join(args.text)
     elif args.editor == True:
-        note_text = get_text_from_editor()
+        if args.update:
+            previous_text = get_note(cur, args.table_name, args.update)[1]
+        else:
+            previous_text = ''
+        note_text = get_text_from_editor(previous_text)
     else:
             
         try:
