@@ -54,9 +54,6 @@ parser.add_argument("text",  help="text", default=None, nargs='*')
 parser.add_argument("-u", "--update",  help="edit note. add entry number",
                     default=None, metavar='note_id', type=int)
 
-parser.add_argument("-e", "--editor",  help="edit using your text editor",
-                    default='vim')
-
 args = parser.parse_args()
 
 def get_date_string(date_and_time:datetime.datetime = None):
@@ -316,12 +313,6 @@ def import_database(db_filename: str, outdb_filename:str):
     merge_databases_by_name(outdb_filename, db_filename, outdb_filename)
     print('done importing your database')
 
-def get_text_from_editor(previous_text:str=''):
-    tempfile_name = '/tmp/makenote_entry.txt'
-    open(tempfile_name, 'w').write(previous_text)
-    os.system(f'{os.environ.get("EDITOR", "vi")} {tempfile_name}')
-    return open(tempfile_name).read()
-
 
 if sys.stdout.isatty() == True:
     # this number is like an option for how the show record output is styled
@@ -372,17 +363,15 @@ else:
 
     if len(args.text) > 0:
         note_text = ' '.join(args.text)
-    elif args.editor == True:
+    else:
         if args.update:
             previous_text = get_note(cur, args.table_name, args.update)[1]
         else:
             previous_text = ''
-        note_text = get_text_from_editor(previous_text)
-    else:
             
         try:
             from prompt_toolkit import prompt
-            note_text = prompt()
+            note_text = prompt(multiline=True, default=previous_text)
         except KeyboardInterrupt:
             exit(1)
 
