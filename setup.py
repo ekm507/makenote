@@ -1,5 +1,6 @@
 import setuptools
 from makenote import __version__
+import os
 
 with open("README.md") as readme:
     long_description = readme.read()
@@ -22,4 +23,5 @@ setuptools.setup(
     scripts=[
         "bin/makenote",
     ],
+    data_files = [('.', ["makenote/makenote.conf"])],
 )
