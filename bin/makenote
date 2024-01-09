@@ -127,10 +127,10 @@ def tail_show_table(sqlite_cursor, table_name, limit):
                 # replace that utf representation of نیم‌فاصله with itself
                 r[1].replace('\u200c', ' ')
                 # remove miliseconds from date and time and print a in a stylized format
-                print(f'{r[0][:10]}   {r[0][10:18]}    {r[1]}')
+                print(f'{get_date_string_from_string(r[0])}    {r[1]}')
             
             elif show_style == 2:
-                print(f'\u001b[36m{r[0][:10]} {r[0][10:18]}\u001b[0m  {r[1]}')
+                print(f'\u001b[36m{get_date_string_from_string(r[0])}\u001b[0m  {r[1]}')
 
             # if no show style is specified
             else:
@@ -140,6 +140,10 @@ def tail_show_table(sqlite_cursor, table_name, limit):
     except sqlite3.OperationalError as error_text:
         print(error_text)
         exit(1)
+
+def get_date_string_from_string(date_and_time:str):
+    date_and_time = datetime.datetime.fromisoformat(date_and_time)
+    return get_date_string(date_and_time)
 
 def show_table(sqlite_cursor, table_name):
     try:
