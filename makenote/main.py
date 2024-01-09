@@ -52,7 +52,7 @@ parser.add_argument("-i", "--import",  help="import database",
 parser.add_argument("text",  help="text", default=None, nargs='*')
 
 parser.add_argument("-u", "--update",  help="edit note. add entry number",
-                    default=None, nargs="?", metavar='note_id', type=int)
+                    default=None, const="-1", nargs="?", metavar='note_id', type=int)
 
 args = parser.parse_args()
 
@@ -85,12 +85,15 @@ def add_note(sqlite_cursor, table_name, note_text):
 
 def update_entry(sqlite_cursor, table_name, note_id: int, note_text: str) -> None:
     try:
+        if note_id == -1:
+            sqlite_cursor.execute(f"SELECT rowid FROM {table_name} order by rowid DESC LIMIT 1;")
+            note_id = sqlite_cursor.fetchone()[0]
+
         # get the record from sqlite
         sqlite_cursor.execute(f"SELECT * FROM {table_name} LIMIT {note_id - 1}, 1;")
         record = sqlite_cursor.fetchone()
         
         print(f"entry {note_id} with text \"{record[1]}\" updated")
-
         cur.execute(f"""UPDATE {table_name} SET note = "{note_text}" LIMIT {note_id-1},{1};""")
 
     except sqlite3.OperationalError as error_text:
@@ -99,9 +102,13 @@ def update_entry(sqlite_cursor, table_name, note_id: int, note_text: str) -> Non
 
 def get_note(sqlite_cursor, table_name, note_id: int):
     try:
-        print(note_id)
-        # get the record from sqlite
-        sqlite_cursor.execute(f"SELECT * FROM {table_name} LIMIT {note_id - 1}, 1;")
+        if note_id is None:
+            return ('', '')
+        elif note_id == -1:
+            # get the record from sqlite
+            sqlite_cursor.execute(f"SELECT * FROM {table_name} order by rowid DESC LIMIT 1;")
+        else:
+            sqlite_cursor.execute(f"SELECT * FROM {table_name} LIMIT {note_id - 1}, 1;")
         record = sqlite_cursor.fetchone()
         return record
     except sqlite3.OperationalError as error_text:
@@ -365,10 +372,7 @@ else:
     if len(args.text) > 0:
         note_text = ' '.join(args.text)
     else:
-        if args.update:
-            previous_text = get_note(cur, args.table_name, args.update)[1]
-        else:
-            previous_text = ''
+        previous_text = get_note(cur, args.table_name, args.update)[1]
             
         try:
             from prompt_toolkit import prompt
