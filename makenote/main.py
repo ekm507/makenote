@@ -51,7 +51,7 @@ parser.add_argument("-i", "--import",  help="import database",
 
 parser.add_argument("text",  help="text", default=None, nargs='*')
 
-parser.add_argument("-u", "--update",  help="edit note. add entry number",
+parser.add_argument("-u", "--update",  help="edit note. add entry number. last note is edited if no number is given",
                     default=None, const="-1", nargs="?", metavar='note_id', type=int)
 
 args = parser.parse_args()
