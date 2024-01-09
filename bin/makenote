@@ -6,6 +6,7 @@ import datetime
 import argparse
 import shutil
 import configparser
+import jdatetime
 
 # default table name
 config_filename = 'makenote.conf'
@@ -17,6 +18,8 @@ config.read(config_filename)
 diaryFileName = os.path.abspath(config['FILES']['diaryFileName'].replace("~/", f'{os.getenv("HOME")}/'))
 
 default_table_name = config['FILES']['default_table_name']
+
+show_jalali = config['SHOW_STYLE'].getboolean('show_jalali')
 
 parser = argparse.ArgumentParser(prefix_chars='-', prog='makenote',
                                  formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -55,6 +58,19 @@ parser.add_argument("-e", "--editor",  help="edit using your text editor",
 
 args = parser.parse_args()
 
+def get_date_string(date_and_time:datetime.datetime = None):
+
+    if date_and_time is None:
+        date_and_time = jdatetime.datetime.now()
+    else:
+        date_and_time = jdatetime.datetime.fromtimestamp(date_and_time.timestamp())
+
+    if show_jalali == True:
+        jd = date_and_time.strftime("%a, %d %b %Y %H:%M:%S")
+        return f"{jd}"
+    else:
+        return datetime.datetime.ctime(date_and_time)
+
 
 def add_note(sqlite_cursor, table_name, note_text):
     
@@ -65,9 +81,9 @@ def add_note(sqlite_cursor, table_name, note_text):
 
     # let user know it works
     if show_style == 1:
-        print(f'{datetime.datetime.ctime(date_and_time)} - {table_name} - note saved!')
+        print(f'{get_date_string()} - {table_name} - note saved!')
     elif show_style == 2:
-        print(f'\u001b[36m{datetime.datetime.ctime(date_and_time)}\u001b[0m - {table_name} - note saved!')
+        print(f'\u001b[36m{get_date_string()}\u001b[0m - {table_name} - note saved!')
 
 
 def update_entry(sqlite_cursor, table_name, note_id: int, note_text: str) -> None:
