@@ -8,7 +8,7 @@ import shutil
 import configparser
 
 # default table name
-config_filename = f'{os.getenv("HOME")}/.local/share/makenote/makenote.conf'
+config_filename = 'makenote.conf'
 config_filename = f'makenote/makenote.conf'
 config = configparser.ConfigParser()
 config.read(config_filename)
