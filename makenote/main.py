@@ -9,8 +9,8 @@ import jdatetime
 
 # read config file
 # TODO: try to read config from another local dir first. then go to default file
-import makenote
-config_filename = os.path.dirname(makenote.__file__)+'/makenote.conf'
+
+config_filename = os.path.dirname(__file__)+'/makenote.conf'
 config = configparser.ConfigParser()
 config.read(config_filename)
 
@@ -55,7 +55,7 @@ parser.add_argument("-u", "--update",  help="edit note. add entry number",
                     default=None, metavar='note_id', type=int)
 
 parser.add_argument("-e", "--editor",  help="edit using your text editor",
-                    action="store_true", default=False)
+                    default='vim')
 
 args = parser.parse_args()
 
