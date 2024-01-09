@@ -6,7 +6,7 @@ import argparse
 import shutil
 import configparser
 import jdatetime
-
+from makenote import __version__
 # read config file
 # TODO: try to read config from another local dir first. then go to default file
 
@@ -33,7 +33,6 @@ parser.add_argument("-s", '--show', dest='show',
                     help="table to show", nargs='?', const=default_table_name, metavar='TABLE_NAME')
 parser.add_argument("-T", '--tail', dest='tail',
                     help="show last 10 items of table", nargs='?', const=default_table_name, metavar='TABLE_NAME')
-
 # parser.add_argument("-d", '--default', dest='default',
 #                     help="set default table", default=None)
 parser.add_argument("-c", '--create', dest='create_table',
@@ -48,12 +47,11 @@ parser.add_argument("-x", "--export",  help="export database into file",
                     default=None, metavar='FILENAME')
 parser.add_argument("-i", "--import",  help="import database",
                     default=None, dest='import_file', metavar='FILENAME')
-
 parser.add_argument("text",  help="text", default=None, nargs='*')
 
 parser.add_argument("-u", "--update",  help="edit note. add entry number. last note is edited if no number is given",
                     default=None, const="-1", nargs="?", metavar='note_id', type=int)
-
+parser.add_argument('-V', '--version', action='version', version="%(prog)s "+__version__)
 args = parser.parse_args()
 
 def get_date_string(date_and_time:datetime.datetime = None):
