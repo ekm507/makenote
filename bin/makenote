@@ -13,11 +13,10 @@ config_filename = f'makenote/makenote.conf'
 config = configparser.ConfigParser()
 config.read(config_filename)
 
-diaryFileName = os.path.abspath(config['FILES']['diaryFileName'])
-default_table_name = config['FILES']['default_table_name']
-print(diaryFileName, default_table_name)
 # database file is stored here.
-diaryFileName = f'{os.getenv("HOME")}/.local/share/makenote/databases/diaryFile.db'
+diaryFileName = os.path.abspath(config['FILES']['diaryFileName'].replace("~/", f'{os.getenv("HOME")}/'))
+
+default_table_name = config['FILES']['default_table_name']
 
 parser = argparse.ArgumentParser(prefix_chars='-', prog='makenote',
                                  formatter_class=argparse.RawDescriptionHelpFormatter,
