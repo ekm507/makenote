@@ -15,7 +15,7 @@ setuptools.setup(
     author_email="ekm507@gmail.com",
     keywords="makenote",
     url="https://github.com/ekm507/makenote",
-    install_requires=[],
+    install_requires=["jdatetime"],
     classifiers=[],
     packages=["makenote"],
     package_dir={"makenote": "makenote"},
