@@ -1,5 +1,3 @@
-
-
 import sys
 import os
 import sqlite3
@@ -9,9 +7,9 @@ import shutil
 import configparser
 import jdatetime
 
-# default table name
-config_filename = 'makenote.conf'
-config_filename = f'makenote/makenote.conf'
+# read config file
+import makenote
+config_filename = os.path.dirname(makenote.__file__)+'/makenote.conf'
 config = configparser.ConfigParser()
 config.read(config_filename)
 
@@ -19,6 +17,7 @@ config.read(config_filename)
 diaryFileName = os.path.abspath(config['FILES']['diaryFileName'].replace("~/", f'{os.getenv("HOME")}/'))
 
 default_table_name = config['FILES']['default_table_name']
+# default table name
 
 show_jalali = config['SHOW_STYLE'].getboolean('show_jalali')
 
