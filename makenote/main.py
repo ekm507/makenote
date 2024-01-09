@@ -52,7 +52,7 @@ parser.add_argument("-i", "--import",  help="import database",
 parser.add_argument("text",  help="text", default=None, nargs='*')
 
 parser.add_argument("-u", "--update",  help="edit note. add entry number",
-                    default=None, metavar='note_id', type=int)
+                    default=None, nargs="?", metavar='note_id', type=int)
 
 args = parser.parse_args()
 
@@ -99,6 +99,7 @@ def update_entry(sqlite_cursor, table_name, note_id: int, note_text: str) -> Non
 
 def get_note(sqlite_cursor, table_name, note_id: int):
     try:
+        print(note_id)
         # get the record from sqlite
         sqlite_cursor.execute(f"SELECT * FROM {table_name} LIMIT {note_id - 1}, 1;")
         record = sqlite_cursor.fetchone()
