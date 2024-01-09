@@ -381,7 +381,8 @@ else:
     else:
             
         try:
-            note_text = ''.join(sys.stdin.readlines())[:-1]
+            from prompt_toolkit import prompt
+            note_text = prompt()
         except KeyboardInterrupt:
             exit(1)
 
