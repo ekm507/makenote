@@ -8,6 +8,7 @@ import configparser
 import jdatetime
 
 # read config file
+# TODO: try to read config from another local dir first. then go to default file
 import makenote
 config_filename = os.path.dirname(makenote.__file__)+'/makenote.conf'
 config = configparser.ConfigParser()
