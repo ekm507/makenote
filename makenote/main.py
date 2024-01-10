@@ -108,6 +108,9 @@ def get_note(sqlite_cursor, table_name, note_id: int):
         else:
             sqlite_cursor.execute(f"SELECT * FROM {table_name} LIMIT {note_id - 1}, 1;")
         record = sqlite_cursor.fetchone()
+        if record[1] is None:
+            print('**there is an Error in database. text is None.**')
+            return (record[0], '')
         return record
     except sqlite3.OperationalError as error_text:
         print(error_text)
@@ -374,12 +377,15 @@ else:
             
         try:
             from prompt_toolkit import prompt
+            from prompt_toolkit import PromptSession
             from prompt_toolkit.key_binding import KeyBindings
+            session = PromptSession()
             bindings = KeyBindings()
             @bindings.add('c-d')
             def _(event):
                 " Exit when `c-d` is pressed. "
-                event.app.exit()
+                session.history.append_string(event.app.current_buffer.text)
+                event.app.exit(result=event.app.current_buffer.text)
 
             note_text = prompt(multiline=True, default=previous_text, key_bindings=bindings)
         except KeyboardInterrupt:
