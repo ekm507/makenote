@@ -374,7 +374,14 @@ else:
             
         try:
             from prompt_toolkit import prompt
-            note_text = prompt(multiline=True, default=previous_text)
+            from prompt_toolkit.key_binding import KeyBindings
+            bindings = KeyBindings()
+            @bindings.add('c-d')
+            def _(event):
+                " Exit when `c-d` is pressed. "
+                event.app.exit()
+
+            note_text = prompt(multiline=True, default=previous_text, key_bindings=bindings)
         except KeyboardInterrupt:
             exit(1)
 
