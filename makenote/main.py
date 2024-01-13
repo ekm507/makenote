@@ -84,12 +84,12 @@ def add_note(sqlite_cursor, table_name, note_text):
 
     sqlite_cursor.execute(
         f"INSERT INTO {table_name} VALUES (?, ?)", (date_and_time, note_text))
-
+    note_id = sqlite_cursor.execute(f"select max(rowid) from {table_name}").fetchall()[0][0]
     # let user know it works
     if show_style == 1:
         print(f'{get_date_string()} - {table_name} - note saved!')
     elif show_style == 2:
-        print(f'\u001b[36m{get_date_string()}\u001b[0m - {table_name} - note saved!')
+        print(f'\u001b[36m{note_id} - {get_date_string()}\u001b[0m - {table_name} - note saved!')
 
 
 def update_entry(sqlite_cursor, table_name, note_id: int, note_text: str) -> None:
