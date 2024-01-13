@@ -10,7 +10,18 @@ from makenote import __version__
 # read config file
 # TODO: try to read config from another local dir first. then go to default file
 
-config_filename = os.path.dirname(__file__)+'/makenote.conf'
+
+possible_config_filenames = [
+    "./makenote.conf",
+    os.path.expanduser('~') + ".local/share/makenote/makenote.conf",
+    os.path.dirname(__file__)+'/makenote.conf',
+]
+for possible_name in possible_config_filenames:
+    if not os.path.exists(possible_name):
+        continue
+    else:
+        config_filename = possible_name
+        
 config = configparser.ConfigParser()
 config.read(config_filename)
 
