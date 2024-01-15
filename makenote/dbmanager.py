@@ -4,68 +4,13 @@ import sqlite3
 import datetime
 import argparse
 import shutil
-import configparser
 import jdatetime
-from makenote import __version__
+
 # read config file
 # TODO: try to read config from another local dir first. then go to default file
 
 
-possible_config_filenames = [
-    "./makenote.conf",
-    os.path.expanduser('~') + ".local/share/makenote/makenote.conf",
-    os.path.dirname(__file__)+'/makenote.conf',
-]
-for possible_name in possible_config_filenames:
-    if not os.path.exists(possible_name):
-        continue
-    else:
-        config_filename = possible_name
-        
-config = configparser.ConfigParser()
-config.read(config_filename)
-
-# database file is stored here.
-diaryFileName = os.path.abspath(config['FILES']['diaryFileName'].replace("~/", f'{os.getenv("HOME")}/'))
-
-default_table_name = config['FILES']['default_table_name']
-# default table name
-
-show_jalali = config['SHOW_STYLE'].getboolean('show_jalali')
-
-parser = argparse.ArgumentParser(prefix_chars='-', prog='makenote',
-                                 formatter_class=argparse.RawDescriptionHelpFormatter,
-                                 description='add notes to diary or show them',
-                                 epilog='''examples:
-    makenote -t journals it was a nice day today!
-    makenote -show journals''')
-
-parser.add_argument("-s", '--show', dest='show',
-                    help="table to show", nargs='?', const=default_table_name, metavar='TABLE_NAME')
-parser.add_argument("-T", '--tail', dest='tail',
-                    help="show last 10 items of table", nargs='?', const=default_table_name, metavar='TABLE_NAME')
-# parser.add_argument("-d", '--default', dest='default',
-#                     help="set default table", default=None)
-parser.add_argument("-c", '--create', dest='create_table',
-                    help="create table", default=None, metavar='TABLE_NAME')
-parser.add_argument("-l", '--list', dest='list_tables',
-                    help="list tables", default=None, action="store_true")
-parser.add_argument("-t", "--table", dest="table_name", help="table for notes",
-                    default=default_table_name)
-parser.add_argument("-m", "--merge",  help="merge two databases",
-                    default=None, nargs=3, metavar=('FIRST','SECOND','OUTPUT'))
-parser.add_argument("-x", "--export",  help="export database into file",
-                    default=None, metavar='FILENAME')
-parser.add_argument("-i", "--import",  help="import database",
-                    default=None, dest='import_file', metavar='FILENAME')
-parser.add_argument("text",  help="text", default=None, nargs='*')
-
-parser.add_argument("-u", "--update",  help="edit note. add entry number. last note is edited if no number is given",
-                    default=None, const="-1", nargs="?", metavar='note_id', type=int)
-parser.add_argument('-V', '--version', action='version', version="%(prog)s "+__version__)
-args = parser.parse_args()
-
-def get_date_string(date_and_time:datetime.datetime = None):
+def get_date_string(date_and_time:datetime.datetime = None, show_jalali:bool = True):
 
     if date_and_time is None:
         date_and_time = jdatetime.datetime.now()
@@ -77,6 +22,16 @@ def get_date_string(date_and_time:datetime.datetime = None):
     else:
         return date_and_time.ctime()
 
+def print_message(message_type:str, message:list, show_style:int=2):
+    if message_type == "add note":
+        table_name = message[0]
+        note_id = message[1]
+        note_text = message[2]
+        if show_style == 1:
+            print(f'{get_date_string()} - {table_name} - note saved!')
+        elif show_style == 2:
+            print(f'\u001b[36m{note_id} - {get_date_string()}\u001b[0m - {table_name} - note saved!')
+
 
 def add_note(sqlite_cursor, table_name, note_text):
     
@@ -85,11 +40,9 @@ def add_note(sqlite_cursor, table_name, note_text):
     sqlite_cursor.execute(
         f"INSERT INTO {table_name} VALUES (?, ?)", (date_and_time, note_text))
     note_id = sqlite_cursor.execute(f"select max(rowid) from {table_name}").fetchall()[0][0]
+
     # let user know it works
-    if show_style == 1:
-        print(f'{get_date_string()} - {table_name} - note saved!')
-    elif show_style == 2:
-        print(f'\u001b[36m{note_id} - {get_date_string()}\u001b[0m - {table_name} - note saved!')
+    print_message("add note", [table_name, note_id, note_text])
 
 
 def update_entry(sqlite_cursor, table_name, note_id: int, note_text: str) -> None:
