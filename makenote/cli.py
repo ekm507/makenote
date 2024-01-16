@@ -109,7 +109,6 @@ else:
 
     # note will be added to this table
     table_name = args.table_name
-
     if not table_exists(diaryFileDir, table_name):
         print(f'table {table_name} does not exist')
         print('do you want to create it? (y/N)')
@@ -141,6 +140,6 @@ else:
             exit(1)
 
     if args.update:
-        update_entry(cur, args.table_name, args.update, note_text)
+        update_entry(diaryFileDir, args.table_name, args.update, note_text)
     else:
         add_note(diaryFileDir, table_name, note_text)

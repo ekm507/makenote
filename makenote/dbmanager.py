@@ -57,18 +57,24 @@ def add_note(books_directory, book_filename, note_text, note_number:int = 0, not
     print_message("add note", [book_filename, note_id, note_text, note_number, note_category, note_metadata])
 
 
-def update_entry(sqlite_cursor, table_name, note_id: int, note_text: str) -> None:
+def update_entry(books_directory, book_filename, note_id: int, note_text: str) -> None:
     try:
+        date_and_time = datetime.datetime.now()
+
+        sqlite_con, sqlite_cursor = get_connection(books_directory, book_filename)
         if note_id == -1:
-            sqlite_cursor.execute(f"SELECT rowid FROM {table_name} order by rowid DESC LIMIT 1;")
+            sqlite_cursor.execute(f"SELECT rowid FROM {book_filename} order by rowid DESC LIMIT 1;")
             note_id = sqlite_cursor.fetchone()[0]
 
         # get the record from sqlite
-        sqlite_cursor.execute(f"SELECT * FROM {table_name} LIMIT {note_id - 1}, 1;")
+        sqlite_cursor.execute(f"SELECT * FROM {book_filename} LIMIT {note_id - 1}, 1;")
         record = sqlite_cursor.fetchone()
+
+        metadata = json.loads(record[4])
+        metadata["last updated"] = date_and_time
         
         print(f"entry {note_id} with text \"{record[1]}\" updated")
-        sqlite_cursor.execute(f"""UPDATE {table_name} SET note = "{note_text}" LIMIT {note_id-1},{1};""")
+        sqlite_cursor.execute(f"""UPDATE {book_filename} SET note = "{note_text}" LIMIT {note_id-1},{1};""")
 
     except sqlite3.OperationalError as error_text:
         print(error_text)
@@ -160,8 +166,7 @@ def show_table(books_directory, book_name, show_style:int = 2):
         exit(1)
 
 def table_exists(books_directory, book_name) -> bool:
-    sqlite_con, sqlite_cursor = get_connection(books_directory,book_name)
-    return book_name in os.listdir(books_directory)
+    return book_name in get_books_list(books_directory)
 
 
 def make_book(books_directory, book_name):
@@ -177,10 +182,14 @@ def make_book(books_directory, book_name):
         print(error_text)
         exit(1)
 
-def list_tables(books_directory):
+def get_books_list(books_directory):
     import re
-    for book in list(filter( lambda x: re.fullmatch('.*\.db', x), os.listdir(books_directory))):
-        print(book[:-3])
+    books = list(filter( lambda x: re.fullmatch('.*\.db', x), os.listdir(books_directory)))
+    return list(map(lambda x:x[:-3], books))
+
+def list_tables(books_directory):
+    for book in get_books_list(books_directory):
+        print(book)
 
 def export_database_json(books_directory, book_name, output_filename:str):
     try:
