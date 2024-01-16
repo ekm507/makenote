@@ -128,10 +128,12 @@ def get_date_string_from_string(date_and_time:str):
     date_and_time = datetime.datetime.fromisoformat(date_and_time)
     return get_date_string(date_and_time)
 
-def show_table(sqlite_cursor, table_name, show_style:int = 2):
+def show_table(books_directory, book_name, show_style:int = 2):
     try:
+        sqlite_con, sqlite_cursor = get_connection(books_directory,book_name)
+
         # get records from sqlite
-        records = sqlite_cursor.execute(f"SELECT * FROM {table_name};")
+        records = sqlite_cursor.execute(f"SELECT * FROM {book_name};")
         # print them all
         i = 0
         for r in records:

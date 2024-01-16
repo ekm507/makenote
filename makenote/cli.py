@@ -85,7 +85,7 @@ os.makedirs(os.path.dirname(diaryFileDir), exist_ok=True)
 # connect to sqlite file
 
 if args.show:
-    show_table(cur, args.show)
+    show_table(diaryFileDir, args.show)
 elif args.tail:
     tail_show_table(diaryFileDir, args.tail, limit=10)
 elif args.list_tables:
