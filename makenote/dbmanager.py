@@ -159,16 +159,12 @@ def show_table(books_directory, book_name, show_style:int = 2):
         print(error_text)
         exit(1)
 
-def table_exists(sqlite_cursor: sqlite3.Cursor, table_name) -> bool:
-    query = 'SELECT name from sqlite_master where type= "table"'
-    # query = f"SELECT tableName FROM sqlite_master WHERE type='table' AND tableName='{table_name}';"
-    records = sqlite_cursor.execute(query)
-    # print([t for t in tables])
-    tables = [record[0] for record in records]
-    return table_name in tables
+def table_exists(books_directory, book_name) -> bool:
+    sqlite_con, sqlite_cursor = get_connection(books_directory,book_name)
+    return book_name in os.listdir(books_directory)
 
 
-def make_book(book_name, books_directory):
+def make_book(books_directory, book_name):
     try:
         # create a db file
         sqlite_con, sqlite_cursor = get_connection(books_directory, book_name)

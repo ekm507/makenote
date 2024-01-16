@@ -91,7 +91,7 @@ elif args.tail:
 elif args.list_tables:
     list_tables(cur)
 elif args.create_table:
-    make_book(args.create_table, diaryFileDir)
+    make_book(diaryFileDir, args.create_table)
 elif args.export:
     shutil.copy(diaryFileName, args.export)
     print(f'exported to {os.path.realpath(args.export)}')
@@ -110,14 +110,14 @@ else:
     # note will be added to this table
     table_name = args.table_name
 
-    # if not table_exists(cur, table_name):
-    #     print(f'table {table_name} does not exist')
-    #     print('do you want to create it? (y/N)')
-    #     do_you_want_to_create = input()
-    #     if do_you_want_to_create.lower() in ['y', 'yes']:
-    #         make_table(cur, table_name)
-    #     else:
-    #         exit(1)
+    if not table_exists(diaryFileDir, table_name):
+        print(f'table {table_name} does not exist')
+        print('do you want to create it? (y/N)')
+        do_you_want_to_create = input()
+        if do_you_want_to_create.lower() in ['y', 'yes']:
+            make_book(diaryFileDir, table_name)
+        else:
+            exit(1)
 
     if len(args.text) > 0:
         note_text = ' '.join(args.text)
