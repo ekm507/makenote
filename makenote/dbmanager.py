@@ -46,7 +46,7 @@ def get_book_filename(books_directory, book_name):
 def add_note(books_directory, book_filename, note_text, note_number:int = 0, note_category:int = 0, note_metadata:dict={}):
     
     date_and_time = datetime.datetime.now()
-    note_metadata_encoded = json.dumps(note_metadata)
+    note_metadata_encoded = bytes(json.dumps(note_metadata), 'utf-8')
     sqlite_con, sqlite_cursor = get_connection(books_directory, book_filename)
     sqlite_cursor.execute(
         f"INSERT INTO {book_filename} VALUES (?, ?, ?, ?, ?)", (date_and_time, note_text, note_number, note_category, note_metadata_encoded))
@@ -70,11 +70,14 @@ def update_entry(books_directory, book_filename, note_id: int, note_text: str) -
         sqlite_cursor.execute(f"SELECT * FROM {book_filename} LIMIT {note_id - 1}, 1;")
         record = sqlite_cursor.fetchone()
 
-        metadata = json.loads(record[4])
-        metadata["last updated"] = date_and_time
+        metadata = json.loads(record[4].decode("utf-8"))
+        metadata["last_updated"] = date_and_time.ctime()
+        metadata_encoded = bytes(json.dumps(metadata), "utf-8")
         
-        print(f"entry {note_id} with text \"{record[1]}\" updated")
         sqlite_cursor.execute(f"""UPDATE {book_filename} SET note = "{note_text}" LIMIT {note_id-1},{1};""")
+        sqlite_cursor.execute(f"""UPDATE {book_filename} SET metadata = "{metadata_encoded}" LIMIT {note_id-1},{1};""")
+        sqlite_con.commit()
+        print(f"entry {note_id} with text \"{record[1]}\" updated")
 
     except sqlite3.OperationalError as error_text:
         print(error_text)
@@ -119,7 +122,7 @@ def tail_show_table(books_directory, book_name, limit, show_style:int = 2):
                 print(f'{get_date_string_from_string(r[0])}    {r[1]}')
             
             elif show_style == 2:
-                print(f'\u001b[36m{get_date_string_from_string(r[0])}\u001b[0m  {r[1]}  {r[2]}  {r[3]}  {json.loads(r[4])}')
+                print(f'\u001b[36m{get_date_string_from_string(r[0])}\u001b[0m  {r[1]}  {r[2]}  {r[3]}  {json.loads(r[4].decode("utf-8"))}')
 
             # if no show style is specified
             else:
@@ -174,7 +177,7 @@ def make_book(books_directory, book_name):
         # create a db file
         sqlite_con, sqlite_cursor = get_connection(books_directory, book_name)
         sqlite_cursor.execute(f'''CREATE TABLE IF NOT EXISTS {book_name}
-                    (date datetime, note text, number int, category int, metadata text)''')
+                    (date datetime, note text, number int, category int, metadata blob)''')
         # tell the user it was successful
         sqlite_con.commit()
         print(f'notebook {book_name} created!')
@@ -206,7 +209,7 @@ def export_database_json(books_directory, book_name, output_filename:str):
                 "text":r[1],
                 "number":r[2],
                 "category":r[3],
-                "metadata":json.loads(r[4]),
+                "metadata":json.loads(r[4].decode("utf-8")),
             }
             all_data["records"].append(entry)
 
