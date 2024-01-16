@@ -4,19 +4,41 @@ import sqlite3
 import datetime
 import argparse
 import shutil
-# import configparser
+import configparser
 import jdatetime
-# read config file
-# TODO: try to read config from another local dir first. then go to default file
 
 import dbmanager
 from dbmanager import *
 
-__version__ = "2.0"
-show_jalali = True
-diaryFileName = '~/tmp/test.db'
-default_table_name = "journals"
 
+# read config file
+# TODO: try to read config from another local dir first. then go to default file
+
+__version__ = "2.0"
+
+possible_config_filenames = [
+    "./makenote.conf",
+    os.path.expanduser('~') + ".local/share/makenote/makenote.conf",
+    os.path.dirname(__file__)+'/makenote.conf',
+]
+for possible_name in possible_config_filenames:
+    if not os.path.exists(possible_name):
+        continue
+    else:
+        config_filename = possible_name
+        
+config = configparser.ConfigParser()
+config.read(config_filename)
+
+# database file is stored here.
+diaryFileName = os.path.abspath(config['FILES']['diaryFileName'].replace("~/", f'{os.getenv("HOME")}/'))
+
+default_table_name = config['FILES']['default_table_name']
+# default table name
+
+show_jalali = config['SHOW_STYLE'].getboolean('show_jalali')
+
+print(diaryFileName)
 if sys.stdout.isatty() == True:
     # this number is like an option for how the show record output is styled
     show_style = 2
