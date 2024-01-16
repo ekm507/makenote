@@ -75,7 +75,7 @@ def update_entry(books_directory, book_filename, note_id: int, note_text: str) -
         metadata_encoded = bytes(json.dumps(metadata), "utf-8")
         
         sqlite_cursor.execute(f"""UPDATE {book_filename} SET note = "{note_text}" LIMIT {note_id-1},{1};""")
-        sqlite_cursor.execute(f"""UPDATE {book_filename} SET metadata = "{metadata_encoded}" LIMIT {note_id-1},{1};""")
+        sqlite_cursor.execute(f"""UPDATE {book_filename} SET metadata = ? LIMIT {note_id-1},{1};""", (metadata_encoded,))
         sqlite_con.commit()
         print(f"entry {note_id} with text \"{record[1]}\" updated")
 
