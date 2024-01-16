@@ -89,7 +89,7 @@ if args.show:
 elif args.tail:
     tail_show_table(diaryFileDir, args.tail, limit=10)
 elif args.list_tables:
-    list_tables(cur)
+    list_tables(diaryFileDir)
 elif args.create_table:
     make_book(diaryFileDir, args.create_table)
 elif args.export:

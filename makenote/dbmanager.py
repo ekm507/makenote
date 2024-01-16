@@ -177,18 +177,10 @@ def make_book(books_directory, book_name):
         print(error_text)
         exit(1)
 
-def list_tables(sqlite_cursor: sqlite3.Cursor):
-    try:
-        # get list of tables
-        records = sqlite_cursor.execute(
-            'SELECT name from sqlite_master where type= "table"')
-        # print them
-        for r in records:
-            print(r[0])
-    # if there was an error, print error text and exit
-    except sqlite3.OperationalError as error_text:
-        print(error_text)
-        exit(1)
+def list_tables(books_directory):
+    import re
+    for book in list(filter( lambda x: re.fullmatch('.*\.db', x), os.listdir(books_directory))):
+        print(book[:-3])
 
 def export_database_json(sqlite_cursor: sqlite3.Cursor, output_filename:str):
     try:
