@@ -5,6 +5,7 @@ import datetime
 import argparse
 import shutil
 import jdatetime
+import json
 
 # read config file
 # TODO: try to read config from another local dir first. then go to default file
@@ -33,12 +34,12 @@ def print_message(message_type:str, message:list, show_style:int=2):
             print(f'\u001b[36m{note_id} - {get_date_string()}\u001b[0m - {table_name} - note saved!')
 
 
-def add_note(sqlite_cursor, table_name, note_text):
+def add_note(sqlite_cursor, table_name, note_text, note_number:int = 0, note_category:int = 0, note_metadata:dict={}):
     
     date_and_time = datetime.datetime.now()
-
+    note_metadata_encoded = json.dumps(note_metadata)
     sqlite_cursor.execute(
-        f"INSERT INTO {table_name} VALUES (?, ?)", (date_and_time, note_text))
+        f"INSERT INTO {table_name} VALUES (?, ?, ?, ?)", (date_and_time, note_text, note_number, note_category, note_metadata))
     note_id = sqlite_cursor.execute(f"select max(rowid) from {table_name}").fetchall()[0][0]
 
     # let user know it works
