@@ -182,19 +182,25 @@ def list_tables(books_directory):
     for book in list(filter( lambda x: re.fullmatch('.*\.db', x), os.listdir(books_directory))):
         print(book[:-3])
 
-def export_database_json(sqlite_cursor: sqlite3.Cursor, output_filename:str):
+def export_database_json(books_directory, book_name, output_filename:str):
     try:
+        sqlite_con, sqlite_cursor = get_connection(books_directory, book_name)
         # get list of tables
-        records = sqlite_cursor.execute(
-            'SELECT name from sqlite_master where type= "table"')
+        records = sqlite_cursor.execute(f'SELECT * from {book_name}')
+        table_metadata = dict()
         # print them
-        tables = [r[0] for r in records]
-        import json
-        all_data = {}
-        for table in tables:
-            table_data = sqlite_cursor.execute(f"select * from {table};").fetchall()
-            all_data[table] = table_data
-        
+        all_data = {"metadata": table_metadata,
+        "records":[]}
+        for r in records:
+            entry = {
+                "date":r[0],
+                "text":r[1],
+                "number":r[2],
+                "category":r[3],
+                "metadata":json.loads(r[4]),
+            }
+            all_data["records"].append(entry)
+
         print(json.dumps(all_data, ensure_ascii=False))
 
 
