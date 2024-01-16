@@ -33,7 +33,8 @@ def print_message(message_type:str, message:list, show_style:int=2):
         elif show_style == 2:
             print(f'\u001b[36m{note_id} - {get_date_string()}\u001b[0m - {table_name} - note saved!')
 
-def get_connection(book_filename):
+def get_connection(books_directory, book_name):
+    book_filename = get_book_filename(books_directory, book_name)
     con = sqlite3.connect(book_filename)
     cur = con.cursor()
     return con, cur
@@ -46,7 +47,7 @@ def add_note(books_directory, book_filename, note_text, note_number:int = 0, not
     
     date_and_time = datetime.datetime.now()
     note_metadata_encoded = json.dumps(note_metadata)
-    sqlite_con, sqlite_cursor = get_connection(get_book_filename(books_directory, book_filename))
+    sqlite_con, sqlite_cursor = get_connection(books_directory, book_filename)
     sqlite_cursor.execute(
         f"INSERT INTO {book_filename} VALUES (?, ?, ?, ?, ?)", (date_and_time, note_text, note_number, note_category, note_metadata_encoded))
     note_id = sqlite_cursor.execute(f"select max(rowid) from {book_filename}").fetchall()[0][0]
@@ -94,7 +95,7 @@ def get_note(sqlite_cursor, table_name, note_id: int):
 def tail_show_table(books_directory, book_name, limit, show_style:int = 2):
     try:
         # get records from sqlite
-        sqlite_con, sqlite_cursor = get_connection(get_book_filename(books_directory,book_name))
+        sqlite_con, sqlite_cursor = get_connection(books_directory,book_name)
         sqlite_cursor.execute(f"SELECT count(*) FROM {book_name}")
         N = sqlite_cursor.fetchone()[0]
         records = sqlite_cursor.execute(f"SELECT * FROM {book_name} LIMIT {N - limit}, {limit};")
@@ -168,8 +169,7 @@ def table_exists(sqlite_cursor: sqlite3.Cursor, table_name) -> bool:
 def make_book(book_name, books_directory):
     try:
         # create a db file
-        sqlite_con = get_connection(get_book_filename(books_directory, book_name))
-        sqlite_cursor = sqlite_con.cursor()
+        sqlite_con, sqlite_cursor = get_connection(books_directory, book_name)
         sqlite_cursor.execute(f'''CREATE TABLE IF NOT EXISTS {book_name}
                     (date datetime, note text, number int, category int, metadata text)''')
         # tell the user it was successful
