@@ -56,7 +56,7 @@ def update_entry(sqlite_cursor, table_name, note_id: int, note_text: str) -> Non
         record = sqlite_cursor.fetchone()
         
         print(f"entry {note_id} with text \"{record[1]}\" updated")
-        cur.execute(f"""UPDATE {table_name} SET note = "{note_text}" LIMIT {note_id-1},{1};""")
+        sqlite_cursor.execute(f"""UPDATE {table_name} SET note = "{note_text}" LIMIT {note_id-1},{1};""")
 
     except sqlite3.OperationalError as error_text:
         print(error_text)
@@ -80,7 +80,7 @@ def get_note(sqlite_cursor, table_name, note_id: int):
         print(error_text)
         exit(1)
 
-def tail_show_table(sqlite_cursor, table_name, limit):
+def tail_show_table(sqlite_cursor, table_name, limit, show_style:int = 2):
     try:
         # get records from sqlite
         sqlite_cursor.execute(f"SELECT count(*) FROM {table_name}")
@@ -115,7 +115,7 @@ def get_date_string_from_string(date_and_time:str):
     date_and_time = datetime.datetime.fromisoformat(date_and_time)
     return get_date_string(date_and_time)
 
-def show_table(sqlite_cursor, table_name):
+def show_table(sqlite_cursor, table_name, show_style:int = 2):
     try:
         # get records from sqlite
         records = sqlite_cursor.execute(f"SELECT * FROM {table_name};")
@@ -286,82 +286,3 @@ def import_database(db_filename: str, outdb_filename:str):
     merge_databases_by_name(outdb_filename, db_filename, outdb_filename)
     print('done importing your database')
 
-
-if sys.stdout.isatty() == True:
-    # this number is like an option for how the show record output is styled
-    show_style = 2
-else:
-    show_style = 1
-
-os.makedirs(os.path.dirname(diaryFileName), exist_ok=True)
-# connect to sqlite file
-con = sqlite3.connect(diaryFileName)
-# define a cursor to execute commands
-cur = con.cursor()
-
-if args.show:
-    show_table(cur, args.show)
-elif args.tail:
-    tail_show_table(cur, args.tail, limit=10)
-elif args.list_tables:
-    list_tables(cur)
-elif args.create_table:
-    make_table(cur, args.create_table)
-elif args.export:
-    shutil.copy(diaryFileName, args.export)
-    print(f'exported to {os.path.realpath(args.export)}')
-elif args.import_file:
-    import_database(args.import_file, diaryFileName)
-
-elif args.merge:
-    firstdb, seconddb, outdb = args.merge
-    merge_databases_by_name(firstdb, seconddb, outdb)
-# elif args.default:
-#     default_table_name = args.default
-#     table_name = args.default
-
-else:
-
-    # note will be added to this table
-    table_name = args.table_name
-
-    if not table_exists(cur, table_name):
-        print(f'table {table_name} does not exist')
-        print('do you want to create it? (y/N)')
-        do_you_want_to_create = input()
-        if do_you_want_to_create.lower() in ['y', 'yes']:
-            make_table(cur, table_name)
-        else:
-            exit(1)
-
-    if len(args.text) > 0:
-        note_text = ' '.join(args.text)
-    else:
-        previous_text = get_note(cur, args.table_name, args.update)[1]
-            
-        try:
-            from prompt_toolkit import prompt
-            from prompt_toolkit import PromptSession
-            from prompt_toolkit.key_binding import KeyBindings
-            session = PromptSession()
-            bindings = KeyBindings()
-            @bindings.add('c-d')
-            def _(event):
-                " Exit when `c-d` is pressed. "
-                session.history.append_string(event.app.current_buffer.text)
-                event.app.exit(result=event.app.current_buffer.text)
-
-            note_text = prompt(multiline=True, default=previous_text, key_bindings=bindings)
-        except KeyboardInterrupt:
-            exit(1)
-
-    if args.update:
-        update_entry(cur, args.table_name, args.update, note_text)
-    else:
-        add_note(cur, table_name, note_text)
-
-# commit all changes in the database so they are saved.
-con.commit()
-
-# close the database file
-con.close()
