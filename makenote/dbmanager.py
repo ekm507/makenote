@@ -51,6 +51,7 @@ def add_note(books_directory, book_filename, note_text, note_number:int = 0, not
         f"INSERT INTO {book_filename} VALUES (?, ?, ?, ?, ?)", (date_and_time, note_text, note_number, note_category, note_metadata_encoded))
     note_id = sqlite_cursor.execute(f"select max(rowid) from {book_filename}").fetchall()[0][0]
 
+    sqlite_con.commit()
     # let user know it works
     print_message("add note", [book_filename, note_id, note_text, note_number, note_category, note_metadata])
 
