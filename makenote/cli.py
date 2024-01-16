@@ -31,7 +31,7 @@ config = configparser.ConfigParser()
 config.read(config_filename)
 
 # database file is stored here.
-diaryFileName = os.path.abspath(config['FILES']['diaryFileName'].replace("~/", f'{os.getenv("HOME")}/'))
+diaryFileDir = os.path.abspath(config['FILES']['diaryFileDir'].replace("~/", f'{os.getenv("HOME")}/'))
 
 default_table_name = config['FILES']['default_table_name']
 # default table name
@@ -81,19 +81,8 @@ args = parser.parse_args()
 
 
 
-os.makedirs(os.path.dirname(diaryFileName), exist_ok=True)
+os.makedirs(os.path.dirname(diaryFileDir), exist_ok=True)
 # connect to sqlite file
-con = sqlite3.connect(diaryFileName)
-# define a cursor to execute commands
-cur = con.cursor()
-
-
-os.makedirs(os.path.dirname(diaryFileName), exist_ok=True)
-# connect to sqlite file
-con = sqlite3.connect(diaryFileName)
-# define a cursor to execute commands
-cur = con.cursor()
-
 
 if args.show:
     show_table(cur, args.show)
@@ -102,7 +91,7 @@ elif args.tail:
 elif args.list_tables:
     list_tables(cur)
 elif args.create_table:
-    make_table(cur, args.create_table)
+    make_book(args.create_table, diaryFileDir)
 elif args.export:
     shutil.copy(diaryFileName, args.export)
     print(f'exported to {os.path.realpath(args.export)}')
@@ -121,19 +110,19 @@ else:
     # note will be added to this table
     table_name = args.table_name
 
-    if not table_exists(cur, table_name):
-        print(f'table {table_name} does not exist')
-        print('do you want to create it? (y/N)')
-        do_you_want_to_create = input()
-        if do_you_want_to_create.lower() in ['y', 'yes']:
-            make_table(cur, table_name)
-        else:
-            exit(1)
+    # if not table_exists(cur, table_name):
+    #     print(f'table {table_name} does not exist')
+    #     print('do you want to create it? (y/N)')
+    #     do_you_want_to_create = input()
+    #     if do_you_want_to_create.lower() in ['y', 'yes']:
+    #         make_table(cur, table_name)
+    #     else:
+    #         exit(1)
 
     if len(args.text) > 0:
         note_text = ' '.join(args.text)
     else:
-        previous_text = get_note(cur, args.table_name, args.update)[1]
+        previous_text = ''
             
         try:
             from prompt_toolkit import prompt
@@ -154,10 +143,4 @@ else:
     if args.update:
         update_entry(cur, args.table_name, args.update, note_text)
     else:
-        add_note(cur, table_name, note_text)
-
-# commit all changes in the database so they are saved.
-con.commit()
-
-# close the database file
-con.close()
+        add_note(diaryFileDir, table_name, note_text)
