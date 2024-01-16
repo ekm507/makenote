@@ -38,7 +38,6 @@ default_table_name = config['FILES']['default_table_name']
 
 show_jalali = config['SHOW_STYLE'].getboolean('show_jalali')
 
-print(diaryFileName)
 if sys.stdout.isatty() == True:
     # this number is like an option for how the show record output is styled
     show_style = 2
