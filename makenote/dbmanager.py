@@ -90,12 +90,13 @@ def get_note(sqlite_cursor, table_name, note_id: int):
         print(error_text)
         exit(1)
 
-def tail_show_table(sqlite_cursor, table_name, limit, show_style:int = 2):
+def tail_show_table(books_directory, book_name, limit, show_style:int = 2):
     try:
         # get records from sqlite
-        sqlite_cursor.execute(f"SELECT count(*) FROM {table_name}")
+        sqlite_con, sqlite_cursor = get_connection(get_book_filename(books_directory,book_name))
+        sqlite_cursor.execute(f"SELECT count(*) FROM {book_name}")
         N = sqlite_cursor.fetchone()[0]
-        records = sqlite_cursor.execute(f"SELECT * FROM {table_name} LIMIT {N - limit}, {limit};")
+        records = sqlite_cursor.execute(f"SELECT * FROM {book_name} LIMIT {N - limit}, {limit};")
         # print them all
         i = N - limit 
         for r in records:
@@ -110,7 +111,7 @@ def tail_show_table(sqlite_cursor, table_name, limit, show_style:int = 2):
                 print(f'{get_date_string_from_string(r[0])}    {r[1]}')
             
             elif show_style == 2:
-                print(f'\u001b[36m{get_date_string_from_string(r[0])}\u001b[0m  {r[1]}')
+                print(f'\u001b[36m{get_date_string_from_string(r[0])}\u001b[0m  {r[1]}  {r[2]}  {r[3]}  {json.loads(r[4])}')
 
             # if no show style is specified
             else:

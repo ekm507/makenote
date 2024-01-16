@@ -87,7 +87,7 @@ os.makedirs(os.path.dirname(diaryFileDir), exist_ok=True)
 if args.show:
     show_table(cur, args.show)
 elif args.tail:
-    tail_show_table(cur, args.tail, limit=10)
+    tail_show_table(diaryFileDir, args.tail, limit=10)
 elif args.list_tables:
     list_tables(cur)
 elif args.create_table:
