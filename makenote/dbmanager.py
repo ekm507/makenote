@@ -122,7 +122,7 @@ def tail_show_table(books_directory, book_name, limit, show_style:int = 2):
                 print(f'{get_date_string_from_string(r[0])}    {r[1]}')
             
             elif show_style == 2:
-                print(f'\u001b[36m{get_date_string_from_string(r[0])}\u001b[0m  {r[1]}  {r[2]}  {r[3]}  {json.loads(r[4].decode("utf-8"))}')
+                print(f'\u001b[36m{get_date_string_from_string(r[0])}\u001b[0m  {r[1]}')
 
             # if no show style is specified
             else:
