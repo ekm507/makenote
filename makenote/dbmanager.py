@@ -179,6 +179,22 @@ def make_book(books_directory, book_name):
         sqlite_cursor.execute(f'''CREATE TABLE IF NOT EXISTS {book_name}
                     (date datetime, note text, number int, category int, metadata blob)''')
         # tell the user it was successful
+        book_metadata = {
+            "name": book_name,
+            "date created": datetime.datetime.now().ctime(),
+            "description": "a notebook",
+            "version": "makenote V2",
+            "":"",
+
+        }
+
+
+        book_metadata_encoded = bytes(json.dumps(book_metadata), "utf-8")
+
+        sqlite_cursor.execute(f'''CREATE TABLE IF NOT EXISTS metadata
+                    (metadata blob)''')
+        sqlite_cursor.execute("insert INTO metadata VALUES (?);", (book_metadata_encoded,))
+
         sqlite_con.commit()
         print(f'notebook {book_name} created!')
     except sqlite3.OperationalError as error_text:
