@@ -122,7 +122,7 @@ def get_note(sqlite_cursor, table_name, note_id: int):
         print(error_text)
         exit(1)
 
-def tail_show_table(books_directory, book_name, limit, show_style:int = 2):
+def tail_show_table_with_category(books_directory, book_name, limit, show_style:int = 2, category_to_show:int = -1):
     try:
         # get records from sqlite
         sqlite_con, sqlite_cursor = get_connection(books_directory,book_name)
@@ -132,6 +132,8 @@ def tail_show_table(books_directory, book_name, limit, show_style:int = 2):
         # print them all
         i = N - limit 
         for r in records:
+            if category_to_show != -1 and r[3] != category_to_show:
+                continue
             i += 1
             print(i, end="  ")
             category = f" \u001b[35m⭐{r[3]} " if r[3] != 0 else ""
@@ -154,6 +156,10 @@ def tail_show_table(books_directory, book_name, limit, show_style:int = 2):
     except sqlite3.OperationalError as error_text:
         print(error_text)
         exit(1)
+
+
+def tail_show_table(books_directory, book_name, limit, show_style:int = 2):
+    tail_show_table_with_category(books_directory, book_name, limit, show_style, category_to_show=-1)
 
 def get_date_string_from_string(date_and_time:str):
     date_and_time = datetime.datetime.fromisoformat(date_and_time)
