@@ -128,7 +128,10 @@ def tail_show_table_with_category(books_directory, book_name, limit, show_style:
         sqlite_con, sqlite_cursor = get_connection(books_directory,book_name)
         sqlite_cursor.execute(f"SELECT count(*) FROM {book_name}")
         N = sqlite_cursor.fetchone()[0]
-        records = sqlite_cursor.execute(f"SELECT * FROM {book_name} LIMIT {N - limit}, {limit};")
+        if limit == -1:
+            records = sqlite_cursor.execute(f"SELECT * FROM {book_name};")
+        else:
+            records = sqlite_cursor.execute(f"SELECT * FROM {book_name} LIMIT {N - limit}, {limit};")
         # print them all
         i = N - limit 
         for r in records:
