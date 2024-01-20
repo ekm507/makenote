@@ -55,7 +55,7 @@ parser = argparse.ArgumentParser(prefix_chars='-', prog='makenote',
 parser.add_argument("-s", '--show', dest='show',
                     help="table to show", nargs='?', const=default_table_name, metavar='TABLE_NAME')
 parser.add_argument("-T", '--tail', dest='tail',
-                    help="show last 10 items of table", nargs='?', const=default_table_name, metavar='TABLE_NAME')
+                    help="show last items of table", nargs='?', type=int,const=10, metavar='LIMIT')
 # parser.add_argument("-d", '--default', dest='default',
 #                     help="set default table", default=None)
 parser.add_argument("-c", '--create', dest='create_table',
@@ -87,7 +87,7 @@ os.makedirs(os.path.dirname(diaryFileDir), exist_ok=True)
 if args.show:
     show_table(diaryFileDir, args.show)
 elif args.tail:
-    tail_show_table(diaryFileDir, args.tail, limit=10)
+    tail_show_table(diaryFileDir, args.table_name, limit=args.tail)
 elif args.list_tables:
     list_tables(diaryFileDir)
 elif args.create_table:
