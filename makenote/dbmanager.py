@@ -171,6 +171,9 @@ def get_date_string_from_string(date_and_time:str):
 def show_table(books_directory, book_name, show_style:int = 2):
     tail_show_table(books_directory, book_name, limit=-1, show_style = 2)
 
+def show_table_with_category(books_directory, book_name, category:int = 0, show_style:int = 2):
+    tail_show_table_with_category(books_directory, book_name, -1, show_style=show_style, category_to_show=category)
+
 def table_exists(books_directory, book_name) -> bool:
     return book_name in get_books_list(books_directory)
 

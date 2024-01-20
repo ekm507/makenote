@@ -53,7 +53,7 @@ parser = argparse.ArgumentParser(prefix_chars='-', prog='makenote',
     makenote -show journals''')
 
 parser.add_argument("-s", '--show', dest='show',
-                    help="table to show", nargs='?', const=default_table_name, metavar='TABLE_NAME')
+                    help="show notes from certain category", nargs='?', const=-1, type=int ,metavar='CATEGORY')
 parser.add_argument("-T", '--tail', dest='tail',
                     help="show last items of table", nargs='?', type=int,const=10, metavar='LIMIT')
 # parser.add_argument("-d", '--default', dest='default',
@@ -84,8 +84,8 @@ args = parser.parse_args()
 os.makedirs(os.path.dirname(diaryFileDir), exist_ok=True)
 # connect to sqlite file
 
-if args.show:
-    show_table(diaryFileDir, args.show)
+if args.show is not None:
+    show_table_with_category(diaryFileDir, args.table_name, category=args.show)
 elif args.tail:
     tail_show_table(diaryFileDir, args.table_name, limit=args.tail)
 elif args.list_tables:
