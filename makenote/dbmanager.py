@@ -169,35 +169,7 @@ def get_date_string_from_string(date_and_time:str):
     return get_date_string(date_and_time)
 
 def show_table(books_directory, book_name, show_style:int = 2):
-    try:
-        sqlite_con, sqlite_cursor = get_connection(books_directory,book_name)
-
-        # get records from sqlite
-        records = sqlite_cursor.execute(f"SELECT * FROM {book_name};")
-        # print them all
-        i = 0
-        for r in records:
-            i += 1
-            print(i, end="  ")
-
-            # if style number 1 is selected
-            if show_style == 1:
-                # replace that utf representation of نیم‌فاصله with itself
-                r[1].replace('\u200c', ' ')
-                # remove miliseconds from date and time and print a in a stylized format
-                print(f'{r[0][:10]}   {r[0][10:18]}    {r[1]}')
-            
-            elif show_style == 2:
-                print(f'\u001b[36m{r[0][:10]} {r[0][10:18]}\u001b[0m  {r[1]}')
-
-            # if no show style is specified
-            else:
-                # print in python default style of printing
-                print(r)
-    # if there was an error, print error text and exit
-    except sqlite3.OperationalError as error_text:
-        print(error_text)
-        exit(1)
+    tail_show_table(books_directory, book_name, limit=-1, show_style = 2)
 
 def table_exists(books_directory, book_name) -> bool:
     return book_name in get_books_list(books_directory)
