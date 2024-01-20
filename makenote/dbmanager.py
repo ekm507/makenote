@@ -134,6 +134,7 @@ def tail_show_table(books_directory, book_name, limit, show_style:int = 2):
         for r in records:
             i += 1
             print(i, end="  ")
+            category = f" \u001b[35m⭐{r[3]} " if r[3] != 0 else ""
 
             # if style number 1 is selected
             if show_style == 1:
@@ -143,7 +144,7 @@ def tail_show_table(books_directory, book_name, limit, show_style:int = 2):
                 print(f'{get_date_string_from_string(r[0])}    {r[1]}')
             
             elif show_style == 2:
-                print(f'\u001b[36m{get_date_string_from_string(r[0])}\u001b[0m  {r[1]}')
+                print(f'\u001b[36m{get_date_string_from_string(r[0])}{category}\u001b[0m  {r[1]}')
 
             # if no show style is specified
             else:
