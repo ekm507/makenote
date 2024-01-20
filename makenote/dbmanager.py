@@ -69,7 +69,7 @@ def update_entry(books_directory, book_filename, note_id: int, note_text: str) -
         # get the record from sqlite
         sqlite_cursor.execute(f"SELECT * FROM {book_filename} LIMIT {note_id - 1}, 1;")
         record = sqlite_cursor.fetchone()
-
+        print(record)
         metadata = json.loads(record[4].decode("utf-8"))
         metadata["last_updated"] = date_and_time.ctime()
         metadata_encoded = bytes(json.dumps(metadata), "utf-8")

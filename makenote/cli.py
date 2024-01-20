@@ -54,6 +54,8 @@ parser = argparse.ArgumentParser(prefix_chars='-', prog='makenote',
 
 parser.add_argument("-s", '--show', dest='show',
                     help="show notes from certain category", nargs='?', const=-1, type=int ,metavar='CATEGORY')
+parser.add_argument("-C", '--set-category', dest='set_category',
+                    help="set category of a note for update", default=-1, type=int ,metavar='CATEGORY')
 parser.add_argument("-T", '--tail', dest='tail',
                     help="show last items of table", nargs='?', type=int,const=10, metavar='LIMIT')
 # parser.add_argument("-d", '--default', dest='default',
@@ -104,6 +106,10 @@ elif args.merge:
 # elif args.default:
 #     default_table_name = args.default
 #     table_name = args.default
+
+elif args.set_category != -1:
+    if args.update is not None:
+        set_category(diaryFileDir, args.table_name, args.update, args.set_category)
 
 else:
 
