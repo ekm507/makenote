@@ -83,6 +83,27 @@ def update_entry(books_directory, book_filename, note_id: int, note_text: str) -
         print(error_text)
         exit(1)
 
+def set_category(books_directory, book_filename, note_id: int, category: int) -> None:
+    try:
+
+        sqlite_con, sqlite_cursor = get_connection(books_directory, book_filename)
+        if note_id == -1:
+            sqlite_cursor.execute(f"SELECT rowid FROM {book_filename} order by rowid DESC LIMIT 1;")
+            note_id = sqlite_cursor.fetchone()[0]
+
+        # get the record from sqlite
+        sqlite_cursor.execute(f"SELECT * FROM {book_filename} LIMIT {note_id - 1}, 1;")
+        record = sqlite_cursor.fetchone()
+        
+        sqlite_cursor.execute(f"""UPDATE {book_filename} SET category = "{category}" LIMIT {note_id-1},{1};""")
+        sqlite_con.commit()
+        print(f"entry {note_id} with text \"{record[1]}\" updated")
+
+    except sqlite3.OperationalError as error_text:
+        print(error_text)
+        exit(1)
+
+
 def get_note(sqlite_cursor, table_name, note_id: int):
     try:
         if note_id is None:
