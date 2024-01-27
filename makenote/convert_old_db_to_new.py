@@ -87,4 +87,11 @@ def merge_databases(cursor1:sqlite3.Cursor, cursor2:sqlite3.Cursor, cursor_out:s
 
 
 def convert_old_db_to_new(old_database_filename:str, new_database_directory_name:str):
-    pass
+
+    cur_old = sqlite3.Connection(old_database_filename).cursor()
+    tables = list_tables(cur_old)
+
+    os.makedirs(os.path.dirname(new_database_directory_name), exist_ok=True)
+    for table_name in tables:
+        make_book(new_database_directory_name, table_name)
+
