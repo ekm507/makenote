@@ -43,9 +43,10 @@ def get_book_filename(books_directory, book_name):
     return os.path.abspath(books_directory) + f"/{book_name}.db"
 
 
-def add_note(books_directory, book_filename, note_text, note_number:int = 0, note_category:int = 0, note_metadata:dict={}):
+def add_note(books_directory, book_filename, note_text, note_number:int = 0, note_category:int = 0, note_metadata:dict={}, date_and_time=None):
     
-    date_and_time = datetime.datetime.now()
+    if date_and_time is None:
+        date_and_time = datetime.datetime.now()
     note_metadata_encoded = bytes(json.dumps(note_metadata), 'utf-8')
     sqlite_con, sqlite_cursor = get_connection(books_directory, book_filename)
     sqlite_cursor.execute(
