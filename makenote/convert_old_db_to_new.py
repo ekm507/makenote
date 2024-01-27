@@ -1,5 +1,6 @@
 import sqlite3
 import os
+from dbmanager import add_note, make_book
 
 
 def list_tables(sqlite_cursor: sqlite3.Cursor):
@@ -25,24 +26,11 @@ def show_table(sqlite_cursor, table_name):
         records = sqlite_cursor.execute(f"SELECT * FROM {table_name};")
         # print them all
         i = 0
+        records_list = []
         for r in records:
-            i += 1
-            print(i, end="  ")
+            records_list.append((r[0], r[1]))
 
-            # if style number 1 is selected
-            if show_style == 1:
-                # replace that utf representation of نیم‌فاصله with itself
-                r[1].replace('\u200c', ' ')
-                # remove miliseconds from date and time and print a in a stylized format
-                print(f'{r[0][:10]}   {r[0][10:18]}    {r[1]}')
-            
-            elif show_style == 2:
-                print(f'\u001b[36m{r[0][:10]} {r[0][10:18]}\u001b[0m  {r[1]}')
-
-            # if no show style is specified
-            else:
-                # print in python default style of printing
-                print(r)
+        return records_list
     # if there was an error, print error text and exit
     except sqlite3.OperationalError as error_text:
         print(error_text)
