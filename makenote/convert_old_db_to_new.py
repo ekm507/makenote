@@ -2,15 +2,18 @@ import sqlite3
 import os
 
 
-
 def list_tables(sqlite_cursor: sqlite3.Cursor):
     try:
         # get list of tables
         records = sqlite_cursor.execute(
             'SELECT name from sqlite_master where type= "table"')
-        # print them
+        
+        tables = []
+
         for r in records:
-            print(r[0])
+            tables.append(r[0])
+        
+        return tables
     # if there was an error, print error text and exit
     except sqlite3.OperationalError as error_text:
         print(error_text)
