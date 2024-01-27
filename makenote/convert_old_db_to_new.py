@@ -1,6 +1,8 @@
 import sqlite3
 import os
-from dbmanager import add_note, make_book
+import datetime
+from dbmanager import make_book, add_note
+
 
 
 def list_tables(sqlite_cursor: sqlite3.Cursor):
@@ -94,4 +96,12 @@ def convert_old_db_to_new(old_database_filename:str, new_database_directory_name
     os.makedirs(os.path.dirname(new_database_directory_name), exist_ok=True)
     for table_name in tables:
         make_book(new_database_directory_name, table_name)
+        entries = show_table(cur_old, table_name)
+        for date, note in entries:
+            date_and_time = datetime.datetime.fromisoformat(date)
+            add_note(new_database_directory_name, table_name, note, date_and_time=date_and_time)
+            print(date_and_time, date)
+
+
+
 
