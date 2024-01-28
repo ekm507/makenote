@@ -107,20 +107,22 @@ def set_category(books_directory, book_filename, note_id: int, category: int) ->
         exit(1)
 
 
-def get_note(sqlite_cursor, table_name, note_id: int):
+def get_note(books_directory, book_filename, note_id: int):
     try:
+        sqlite_con, sqlite_cursor = get_connection(books_directory, book_filename)
+
         if note_id is None:
             return ('', '')
         elif note_id == -1:
             # get the record from sqlite
-            sqlite_cursor.execute(f"SELECT * FROM {table_name} order by rowid DESC LIMIT 1;")
+            sqlite_cursor.execute(f"SELECT * FROM {book_filename} order by rowid DESC LIMIT 1;")
         else:
-            sqlite_cursor.execute(f"SELECT * FROM {table_name} LIMIT {note_id - 1}, 1;")
+            sqlite_cursor.execute(f"SELECT * FROM {book_filename} LIMIT {note_id - 1}, 1;")
         record = sqlite_cursor.fetchone()
         if record[1] is None:
             print('**there is an Error in database. text is None.**')
             return (record[0], '')
-        return record
+        return record[1]
     except sqlite3.OperationalError as error_text:
         print(error_text)
         exit(1)
