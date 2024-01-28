@@ -133,5 +133,15 @@ def convert_diaryFile(database_directory):
         shutil.move(old_file_path, new_file_path)
         convert_old_db_to_new(new_file_path, database_directory)
 
-convert_diaryFile('.')
         
+def migrate_if_needed(config_filename):            
+    config = configparser.ConfigParser()
+    config.read(config_filename)
+    # database file is stored here.
+
+    if config['DATABASE'].getfloat('last_version') < 2.0:
+        diaryFileDir = os.path.abspath(config['FILES']['diaryFileDir'].replace("~/", f'{os.getenv("HOME")}/'))
+        convert_diaryFile(diaryFileDir)
+        config['DATABASE']['last_version'] = "2.0"
+        config.write(open(config_filename, 'w'))
+        print("database migration from v1.0 to v2.0 done")
