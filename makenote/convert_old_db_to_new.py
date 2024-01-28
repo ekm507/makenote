@@ -1,7 +1,7 @@
 import sqlite3
 import os
 import datetime
-from dbmanager import make_book, add_note
+from makenote.dbmanager import make_book, add_note
 import configparser
 import shutil
 
