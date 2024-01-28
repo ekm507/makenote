@@ -6,10 +6,9 @@ import argparse
 import shutil
 import configparser
 import jdatetime
-
 import dbmanager
 from dbmanager import *
-
+from makenote.convert_old_db_to_new import migrate_if_needed
 
 # read config file
 # TODO: try to read config from another local dir first. then go to default file
@@ -26,7 +25,9 @@ for possible_name in possible_config_filenames:
         continue
     else:
         config_filename = possible_name
-        
+
+migrate_if_needed(config_filename)
+
 config = configparser.ConfigParser()
 config.read(config_filename)
 
