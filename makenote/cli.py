@@ -128,7 +128,10 @@ else:
     if len(args.text) > 0:
         note_text = ' '.join(args.text)
     else:
-        previous_text = ''
+        if args.update:
+            previous_text = get_note(diaryFileDir, args.table_name, args.update)
+        else:
+            previous_text = ''
             
         try:
             from prompt_toolkit import prompt
