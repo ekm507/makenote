@@ -2,8 +2,8 @@ import sqlite3
 import os
 import datetime
 from dbmanager import make_book, add_note
-
-
+import configparser
+import shutil
 
 def list_tables(sqlite_cursor: sqlite3.Cursor):
     try:
@@ -125,3 +125,13 @@ def check_for_old_dbs(database_directory:str)->list:
                 old_files.append(file_path)
     return old_files
 
+def convert_diaryFile(database_directory):
+    database_directory = os.path.realpath(database_directory)
+    if 'diaryFile.db' in os.listdir(database_directory):
+        old_file_path = os.path.realpath(os.path.join(database_directory, 'diaryFile.db'))
+        new_file_path = os.path.realpath(os.path.join(database_directory, 'diaryFile.db.bak'))
+        shutil.move(old_file_path, new_file_path)
+        convert_old_db_to_new(new_file_path, database_directory)
+
+convert_diaryFile('.')
+        
