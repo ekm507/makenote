@@ -113,3 +113,15 @@ def is_db_version1(database_filename):
             if len(r) == 2:
                 return True
     return False
+
+
+
+def check_for_old_dbs(database_directory:str)->list:
+    old_files = []
+    for filename in os.listdir(database_directory):
+        if filename.endswith('.db'):
+            file_path = os.path.realpath(os.path.join(database_directory, filename))
+            if is_db_version1(file_path):
+                old_files.append(file_path)
+    return old_files
+
