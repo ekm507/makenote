@@ -14,7 +14,7 @@ from dbmanager import *
 # read config file
 # TODO: try to read config from another local dir first. then go to default file
 
-__version__ = "2.0"
+from makenote import __version__
 
 possible_config_filenames = [
     "./makenote.conf",
