@@ -6,7 +6,7 @@ import argparse
 import shutil
 import configparser
 import jdatetime
-import dbmanager
+from makenote import dbmanager
 from dbmanager import *
 from makenote.convert_old_db_to_new import migrate_if_needed
 
