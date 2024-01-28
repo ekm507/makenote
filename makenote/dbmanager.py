@@ -133,10 +133,11 @@ def tail_show_table_with_category(books_directory, book_name, limit, show_style:
         N = sqlite_cursor.fetchone()[0]
         if limit == -1:
             records = sqlite_cursor.execute(f"SELECT * FROM {book_name};")
+            i = 0
         else:
             records = sqlite_cursor.execute(f"SELECT * FROM {book_name} LIMIT {N - limit}, {limit};")
+            i = N - limit 
         # print them all
-        i = N - limit 
         for r in records:
             if category_to_show != -1 and r[3] != category_to_show:
                 continue
