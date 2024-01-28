@@ -103,5 +103,13 @@ def convert_old_db_to_new(old_database_filename:str, new_database_directory_name
             print(date_and_time, date)
 
 
-
-
+def is_db_version1(database_filename):
+    # print(database_filename)
+    cur = sqlite3.Connection(database_filename).cursor()
+    tables = list_tables(cur)
+    for table in tables:
+        records = cur.execute(f"SELECT * FROM {table};")
+        for r in records:
+            if len(r) == 2:
+                return True
+    return False
