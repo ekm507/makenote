@@ -102,7 +102,8 @@ elif args.export:
     print(f'exported to {os.path.realpath(args.export)}')
 elif args.import_file:
     import_database(args.import_file, diaryFileName)
-
+elif args.query:
+    pass
 elif args.merge:
     firstdb, seconddb, outdb = args.merge
     merge_databases_by_name(firstdb, seconddb, outdb)
