@@ -73,8 +73,8 @@ parser.add_argument("-x", "--export",  help="export database into file",
                     default=None, metavar='FILENAME')
 parser.add_argument("-i", "--import",  help="import database",
                     default=None, dest='import_file', metavar='FILENAME')
-parser.add_argument("-q", "--query",  help="search for text. in regex",
-                    default=None, dest='query')
+# parser.add_argument("-q", "--query",  help="search for text. in regex",
+#                     default=None, dest='query')
 parser.add_argument("text",  help="text", default=None, nargs='*')
 
 parser.add_argument("-u", "--update",  help="edit note. add entry number. last note is edited if no number is given",
@@ -102,8 +102,6 @@ elif args.export:
     print(f'exported to {os.path.realpath(args.export)}')
 elif args.import_file:
     import_database(args.import_file, diaryFileName)
-elif args.query:
-    pass
 elif args.merge:
     firstdb, seconddb, outdb = args.merge
     merge_databases_by_name(firstdb, seconddb, outdb)
