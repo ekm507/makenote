@@ -107,11 +107,12 @@ makenote --show -t <notebook>
 
 ## getting help
 
-run:
+run command below to get a list of switches:
 
 ```bash
 makenote -h
 ```
+
 
 # export all notes
 database file is stored in path below:
