@@ -51,7 +51,7 @@ parser = argparse.ArgumentParser(prefix_chars='-', prog='makenote',
                                  description='add notes to diary or show them',
                                  epilog='''examples:
     makenote -t journals it was a nice day today!
-    makenote -show journals''')
+    makenote -s''')
 
 parser.add_argument("-s", '--show', dest='show',
                     help="show notes from certain category", nargs='?', const=-1, type=int ,metavar='CATEGORY')
