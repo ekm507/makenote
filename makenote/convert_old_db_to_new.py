@@ -127,8 +127,7 @@ def check_for_old_dbs(database_directory:str)->list:
 
 def convert_diaryFile(database_directory):
     database_directory = os.path.realpath(database_directory)
-    if not os.path.exists(database_directory):
-        os.makedirs(database_directory, exist_ok=True)
+    os.makedirs(database_directory, exist_ok=True)
     if 'diaryFile.db' in os.listdir(database_directory):
         old_file_path = os.path.realpath(os.path.join(database_directory, 'diaryFile.db'))
         new_file_path = os.path.realpath(os.path.join(database_directory, 'diaryFile.db.bak'))
