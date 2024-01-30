@@ -59,9 +59,15 @@ for example:
 makenote I am reading page 754 of the book
 ```
 
-this tool can also get input from stdin. so you can add notes like this:
-```bash
-echo "I installed makenote tool" | makenote --table journals
+if you run this tool with no text, it will get note text from a simple prompt editor. write your text and then hit `Alt+Enter` or `ctrl+D`.
+
+```
+$ makenote
+
+it was a great day.
+I had a pizza with my friend. (ctrl+D)
+
+1728 - Tue, 10 Bah 1402 18:55:25 - journals - note saved!
 ```
 
 if you do not specify table_name, then note will be stored in default table which is `journals`.
