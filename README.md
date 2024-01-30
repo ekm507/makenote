@@ -113,6 +113,9 @@ run command below to get a list of switches:
 makenote -h
 ```
 
+# configuration
+
+a file named `makenote.conf` is copied into makenote install dir. you can edit this file to get what you want.
 
 # export all notes
 database files are stored in path specified in config file. which by default is below:
