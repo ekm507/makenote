@@ -115,10 +115,10 @@ makenote -h
 
 
 # export all notes
-database file is stored in path below:
+database files are stored in path specified in config file. which by default is below:
 
-`~/.local/share/makenote/databases/diaryFile.db`
+`~/.local/share/makenote/databases/`
 
-for backing notes up, just copy the file into somewhere.
+for backing notes up, just copy the files somewhere safe.
 
-for restoring, just copy the `diaryFile.db` into the path.
+for restoring, just copy the database into the database path again.
