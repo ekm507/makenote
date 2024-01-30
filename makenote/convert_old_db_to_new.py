@@ -127,11 +127,12 @@ def check_for_old_dbs(database_directory:str)->list:
 
 def convert_diaryFile(database_directory):
     database_directory = os.path.realpath(database_directory)
-    if 'diaryFile.db' in os.listdir(database_directory):
+    if os.path.exists(database_directory) and 'diaryFile.db' in os.listdir(database_directory):
         old_file_path = os.path.realpath(os.path.join(database_directory, 'diaryFile.db'))
         new_file_path = os.path.realpath(os.path.join(database_directory, 'diaryFile.db.bak'))
         shutil.move(old_file_path, new_file_path)
         convert_old_db_to_new(new_file_path, database_directory)
+        print("database migration from v1.0 to v2.0 done")
 
         
 def migrate_if_needed(config_filename):            
@@ -144,4 +145,3 @@ def migrate_if_needed(config_filename):
         convert_diaryFile(diaryFileDir)
         config['DATABASE']['last_version'] = "2.0"
         config.write(open(config_filename, 'w'))
-        print("database migration from v1.0 to v2.0 done")
