@@ -47,9 +47,9 @@ pip install ./dist/*.whl
 
 ## adding notes
 
-to add note to a specified table, run this:
+to add note to a specified notebook, run this:
 ```bash
-makenote [-t <table_name>] <note_text>
+makenote [-t <notebook_name>] <note_text>
 ```
 
 in which note text is the note you want to be added.
@@ -70,35 +70,40 @@ I had a pizza with my friend. (ctrl+D)
 1728 - Tue, 10 Bah 1402 18:55:25 - journals - note saved!
 ```
 
-if you do not specify table_name, then note will be stored in default table which is `journals`.
+if you do not specify notebook name, then note will be stored in default notebook which is `journals`. you can change it in config file.
 
 
 
-## creating tables
+## creating notebooks
 
-this tool uses different tables for storing notes.  
+this tool uses different notebooks for storing notes.  
 for example you can classify your notes in "journals", "tasks", "work", etc.
 
-to create a table, run this:
+to create a notebook, run this:
 ```bash
-makenote --create <table_name>
+makenote --create <notebook_name>
 ```
-in which `<table_name>` is the name of table you want to be created.
+in which `<notebook_name>` is the name of notebook you want to be created.
 
-## listing tables
+## listing notebooks
 
-to get a list of tables you have created, run this:
+to get a list of notebooks you have created, run this:
 ```bash
 makenote --list
 ```
 
 ## showing records
 
-to see the notes you have stored in a table, run this:
+to see the notes you have stored in a notebook, run this:
 ```bash
-makenote --show [<table_name>]
+makenote --show
 ```
-if you do not specify table_name, the default table will be shown.
+
+if you do not specify notebook name, the default notebook will be shown. you can specify it with `-t` switch:
+
+```bash
+makenote --show -t <notebook>
+```
 
 ## getting help
 
