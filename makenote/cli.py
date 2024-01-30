@@ -65,8 +65,8 @@ parser.add_argument("-c", '--create', dest='create_table',
                     help="create table", default=None, metavar='TABLE_NAME')
 parser.add_argument("-l", '--list', dest='list_tables',
                     help="list tables", default=None, action="store_true")
-parser.add_argument("-t", "--table", dest="table_name", help="table for notes",
-                    default=default_table_name)
+parser.add_argument("-t", "--table", dest="table_name", help="specify the notebook",
+                    default=default_table_name, dest="table")
 parser.add_argument("-m", "--merge",  help="merge two databases",
                     default=None, nargs=3, metavar=('FIRST','SECOND','OUTPUT'))
 parser.add_argument("-x", "--export",  help="export database into file",
