@@ -146,6 +146,9 @@ def show_note_detailed(books_directory:str, book_filename:str, note_id:int):
     
     if len(history) > 0:
         print('\u001b[33mhistory:')
+    for entry in history:
+        date_and_time = entry["date"]
+        date, time = get_date_string_from_string(date_and_time, split_time=True)
 
 def get_note(books_directory, book_filename, note_id: int):
     try:
