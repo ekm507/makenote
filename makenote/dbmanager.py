@@ -143,7 +143,9 @@ def show_note_detailed(books_directory:str, book_filename:str, note_id:int):
     print(f'\u001b[33m{record[2]}', end="  ")
     date, time = get_date_string_from_string(record[0], split_time=True)
     print(f'\u001b[36m{date} \u001b[96m{time}{updated}{category}\u001b[0m  {text}')
-
+    
+    if len(history) > 0:
+        print('\u001b[33mhistory:')
 
 def get_note(books_directory, book_filename, note_id: int):
     try:
