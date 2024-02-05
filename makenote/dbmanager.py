@@ -131,6 +131,10 @@ def show_note_detailed(books_directory:str, book_filename:str, note_id:int):
     sqlite_cursor.execute(f"SELECT * FROM {book_filename} where number = {note_id};")
     record = sqlite_cursor.fetchone()
 
+    last_date = record[0]
+    text = record[1]
+
+
 def get_note(books_directory, book_filename, note_id: int):
     try:
         sqlite_con, sqlite_cursor = get_connection(books_directory, book_filename)
