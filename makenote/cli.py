@@ -8,7 +8,7 @@ import configparser
 import jdatetime
 from makenote import dbmanager
 from makenote.dbmanager import *
-from makenote.convert_old_db_to_new import migrate_if_needed
+from makenote.migrations import migrate_if_needed
 
 # read config file
 # TODO: try to read config from another local dir first. then go to default file
