@@ -97,10 +97,10 @@ def set_category(books_directory, book_filename, note_id: int, category: int) ->
             note_id = sqlite_cursor.fetchone()[0]
 
         # get the record from sqlite
-        sqlite_cursor.execute(f"SELECT * FROM {book_filename} LIMIT {note_id - 1}, 1;")
+        sqlite_cursor.execute(f"SELECT * FROM {book_filename} where number = {note_id};")
         record = sqlite_cursor.fetchone()
         
-        sqlite_cursor.execute(f"""UPDATE {book_filename} SET category = "{category}" LIMIT {note_id-1},{1};""")
+        sqlite_cursor.execute(f"""UPDATE {book_filename} SET category = "{category}" where number = {note_id};""")
         sqlite_con.commit()
         print(f"entry {note_id} with text \"{record[1]}\" updated")
 
