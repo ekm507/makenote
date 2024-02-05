@@ -188,7 +188,7 @@ def migrate_if_needed(config_filename):
 
     
     # migrate version 2 to 3
-    elif config['DATABASE'].getfloat('last_version') < 3.0:
+    if config['DATABASE'].getfloat('last_version') < 3.0:
         diaryFileDir = os.path.abspath(config['FILES']['diaryFileDir'].replace("~/", f'{os.getenv("HOME")}/'))
         migrate_all_version_2_if_needed(diaryFileDir)
         config['DATABASE']['last_version'] = "4.0"
