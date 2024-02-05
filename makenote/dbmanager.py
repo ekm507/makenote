@@ -184,7 +184,7 @@ def tail_show_table_with_category(books_directory, book_name, limit, show_style:
             
             elif show_style == 2:
                 date, time = get_date_string_from_string(r[0], split_time=True)
-                print(f'\u001b[36m{date} \u001b[96m{time}{category}\u001b[0m  {r[1]}')
+                print(f'\u001b[36m{date} \u001b[96m{time}{updated}{category}\u001b[0m  {r[1]}')
 
             # if no show style is specified
             else:
