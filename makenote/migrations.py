@@ -164,6 +164,9 @@ def migrate_all_version_2_if_needed(database_directory):
             metadata = json.loads(metadata_encoded.decode("utf-8"))
             book_name = metadata["name"]
 
+            if metadata["version"] == "makenote V2":
+                migrate_version_2(database_filename)
+
 
 
 def migrate_if_needed(config_filename):
