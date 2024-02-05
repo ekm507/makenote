@@ -140,6 +140,8 @@ def show_note_detailed(books_directory:str, book_filename:str, note_id:int):
     updated = " \u001b[33mU" if "last_updated" in metadata.keys() else ""
     history = metadata["history"] if "history" in metadata.keys() else []
 
+    print(f'\u001b[33m{record[2]}', end="  ")
+
 def get_note(books_directory, book_filename, note_id: int):
     try:
         sqlite_con, sqlite_cursor = get_connection(books_directory, book_filename)
