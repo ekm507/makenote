@@ -126,6 +126,10 @@ def set_category(books_directory, book_filename, note_id: int, category: int) ->
         print(error_text)
         exit(1)
 
+def show_note_detailed(books_directory:str, book_filename:str, note_id:int):
+    sqlite_con, sqlite_cursor = get_connection(books_directory, book_filename)
+    sqlite_cursor.execute(f"SELECT * FROM {book_filename} where number = {note_id};")
+    record = sqlite_cursor.fetchone()
 
 def get_note(books_directory, book_filename, note_id: int):
     try:
