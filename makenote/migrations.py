@@ -139,7 +139,8 @@ def migrate_version_2(database_filename):
     con = sqlite3.Connection(database_filename)
     cur = con.cursor()
 
-
+    metadata_encoded = cur.execute("select * from metadata;").fetchone()[0]
+    metadata = json.loads(metadata_encoded.decode("utf-8"))
 
 
 
