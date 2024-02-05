@@ -141,6 +141,7 @@ def show_note_detailed(books_directory:str, book_filename:str, note_id:int):
     history = metadata["history"] if "history" in metadata.keys() else []
 
     print(f'\u001b[33m{record[2]}', end="  ")
+    date, time = get_date_string_from_string(record[0], split_time=True)
 
 def get_note(books_directory, book_filename, note_id: int):
     try:
