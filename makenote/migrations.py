@@ -153,6 +153,13 @@ def migrate_version_2(database_filename):
     con.commit()
 
 
+def migrate_all_version_2_if_needed(database_directory):
+    for filename in os.listdir(database_directory):
+        if filename.endswith('.db'):
+            database_filename = os.path.realpath(os.path.join(database_directory, filename))
+            con = sqlite3.Connection(database_filename)
+            cur = con.cursor()
+
 
 
 def migrate_if_needed(config_filename):
