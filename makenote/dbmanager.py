@@ -70,7 +70,7 @@ def update_entry(books_directory, book_filename, note_id: int, note_text: str) -
             note_id = sqlite_cursor.fetchone()[0]
 
         # get the record from sqlite
-        sqlite_cursor.execute(f"SELECT * FROM {book_filename} LIMIT {note_id - 1}, 1;")
+        sqlite_cursor.execute(f"SELECT * FROM {book_filename} where number = {note_id};")
         record = sqlite_cursor.fetchone()
         if record is None:
             print("no such note")
@@ -79,8 +79,8 @@ def update_entry(books_directory, book_filename, note_id: int, note_text: str) -
         metadata["last_updated"] = date_and_time.ctime()
         metadata_encoded = bytes(json.dumps(metadata), "utf-8")
         
-        sqlite_cursor.execute(f"""UPDATE {book_filename} SET note = "{note_text}" LIMIT {note_id-1},{1};""")
-        sqlite_cursor.execute(f"""UPDATE {book_filename} SET metadata = ? LIMIT {note_id-1},{1};""", (metadata_encoded,))
+        sqlite_cursor.execute(f"""UPDATE {book_filename} SET note = "{note_text}" where number = {note_id};""")
+        sqlite_cursor.execute(f"""UPDATE {book_filename} SET metadata = ? where number = {note_id};""", (metadata_encoded,))
         sqlite_con.commit()
         print(f"entry {note_id} with text \"{record[1]}\" updated")
 
