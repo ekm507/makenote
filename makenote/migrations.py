@@ -147,6 +147,12 @@ def migrate_version_2(database_filename):
     cur.execute(f"SELECT rowid FROM {book_name} order by rowid DESC LIMIT 1;")
     n = cur.fetchone()[0]
 
+    for i in range(1, n+1):
+        cur.execute(f"""UPDATE {book_name} SET number = "{i}" LIMIT {i-1},{1};""")
+
+    con.commit()
+
+
 
 
 def migrate_if_needed(config_filename):
