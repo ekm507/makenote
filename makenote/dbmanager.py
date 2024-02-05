@@ -117,7 +117,7 @@ def get_note(books_directory, book_filename, note_id: int):
             # get the record from sqlite
             sqlite_cursor.execute(f"SELECT * FROM {book_filename} order by rowid DESC LIMIT 1;")
         else:
-            sqlite_cursor.execute(f"SELECT * FROM {book_filename} LIMIT {note_id - 1}, 1;")
+            sqlite_cursor.execute(f"SELECT * FROM {book_filename} where number = {note_id};")
         record = sqlite_cursor.fetchone()
         if record[1] is None:
             print('**there is an Error in database. text is None.**')
