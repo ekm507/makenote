@@ -135,6 +135,14 @@ def convert_diaryFile_version_1(database_directory):
         shutil.move(old_file_path, new_file_path)
         convert_old_db_to_new(new_file_path, database_directory)
 
+def migrate_version_2(database_filename):
+    con = sqlite3.Connection(database_filename)
+    cur = con.cursor()
+
+
+
+
+
 def migrate_if_needed(config_filename):
     config = configparser.ConfigParser()
     config.read(config_filename)
@@ -147,3 +155,5 @@ def migrate_if_needed(config_filename):
         config['DATABASE']['last_version'] = "2.0"
         config.write(open(config_filename, 'w'))
         print("database migration from v1.0 to v2.0 done")
+
+    
