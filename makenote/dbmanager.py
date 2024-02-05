@@ -177,9 +177,9 @@ def tail_show_table_with_category(books_directory, book_name, limit, show_style:
 def tail_show_table(books_directory, book_name, limit, show_style:int = 2):
     tail_show_table_with_category(books_directory, book_name, limit, show_style, category_to_show=-1)
 
-def get_date_string_from_string(date_and_time:str):
+def get_date_string_from_string(date_and_time:str, split_time:bool = False):
     date_and_time = datetime.datetime.fromisoformat(date_and_time)
-    return get_date_string(date_and_time)
+    return get_date_string(date_and_time, split_time)
 
 def show_table(books_directory, book_name, show_style:int = 2):
     tail_show_table(books_directory, book_name, limit=-1, show_style = 2)
