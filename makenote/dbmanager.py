@@ -134,6 +134,7 @@ def show_note_detailed(books_directory:str, book_filename:str, note_id:int):
     last_date = record[0]
     text = record[1]
 
+    metadata = json.loads(record[4].decode("utf-8"))
 
 def get_note(books_directory, book_filename, note_id: int):
     try:
