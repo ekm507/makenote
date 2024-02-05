@@ -138,6 +138,7 @@ def show_note_detailed(books_directory:str, book_filename:str, note_id:int):
 
     category = f" \u001b[35m⭐{r[3]} " if record[3] != 0 else ""
     updated = " \u001b[33mU" if "last_updated" in metadata.keys() else ""
+    history = metadata["history"] if "history" in metadata.keys() else []
 
 def get_note(books_directory, book_filename, note_id: int):
     try:
