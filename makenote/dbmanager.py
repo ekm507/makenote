@@ -49,13 +49,15 @@ def add_note(books_directory, book_filename, note_text, note_number:int = 0, not
         date_and_time = datetime.datetime.now()
     note_metadata_encoded = bytes(json.dumps(note_metadata), 'utf-8')
     sqlite_con, sqlite_cursor = get_connection(books_directory, book_filename)
+    if note_number < 1:
+        note_number_latest = sqlite_cursor.execute(f"select max(rowid) from {book_filename}").fetchall()[0][0]
+        note_number = note_number_latest + 1
     sqlite_cursor.execute(
         f"INSERT INTO {book_filename} VALUES (?, ?, ?, ?, ?)", (date_and_time, note_text, note_number, note_category, note_metadata_encoded))
-    note_id = sqlite_cursor.execute(f"select max(rowid) from {book_filename}").fetchall()[0][0]
 
     sqlite_con.commit()
     # let user know it works
-    print_message("add note", [book_filename, note_id, note_text, note_number, note_category, note_metadata])
+    print_message("add note", [book_filename, note_number, note_text, note_number, note_category, note_metadata])
 
 
 def update_entry(books_directory, book_filename, note_id: int, note_text: str) -> None:
