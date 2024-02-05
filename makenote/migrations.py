@@ -166,6 +166,10 @@ def migrate_all_version_2_if_needed(database_directory):
 
             if metadata["version"] == "makenote V2":
                 migrate_version_2(database_filename)
+                metadata["version"] = "makenote V4"
+                metadata_encoded = bytes(json.dumps(metadata), "utf-8")
+                cur.execute(f"""UPDATE metadata SET metadata = ? ;""", (metadata_encoded,))
+                con.commit()
 
 
 
