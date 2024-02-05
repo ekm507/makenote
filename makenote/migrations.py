@@ -4,6 +4,7 @@ import datetime
 from makenote.dbmanager import make_book, add_note
 import configparser
 import shutil
+import json
 
 def list_tables(sqlite_cursor: sqlite3.Cursor):
     try:
@@ -125,7 +126,7 @@ def check_for_old_dbs(database_directory:str)->list:
                 old_files.append(file_path)
     return old_files
 
-def convert_diaryFile(database_directory):
+def convert_diaryFile_version_1(database_directory):
     database_directory = os.path.realpath(database_directory)
     os.makedirs(database_directory, exist_ok=True)
     if 'diaryFile.db' in os.listdir(database_directory):
@@ -133,16 +134,16 @@ def convert_diaryFile(database_directory):
         new_file_path = os.path.realpath(os.path.join(database_directory, 'diaryFile.db.bak'))
         shutil.move(old_file_path, new_file_path)
         convert_old_db_to_new(new_file_path, database_directory)
-        print("database migration from v1.0 to v2.0 done")
 
-        
-def migrate_if_needed(config_filename):            
+def migrate_if_needed(config_filename):
     config = configparser.ConfigParser()
     config.read(config_filename)
     # database file is stored here.
 
+    # migrate version 1 to 2
     if config['DATABASE'].getfloat('last_version') < 2.0:
         diaryFileDir = os.path.abspath(config['FILES']['diaryFileDir'].replace("~/", f'{os.getenv("HOME")}/'))
-        convert_diaryFile(diaryFileDir)
+        convert_diaryFile_version_1(diaryFileDir)
         config['DATABASE']['last_version'] = "2.0"
         config.write(open(config_filename, 'w'))
+        print("database migration from v1.0 to v2.0 done")
