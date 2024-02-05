@@ -150,6 +150,11 @@ def show_note_detailed(books_directory:str, book_filename:str, note_id:int):
         date_and_time = entry["date"]
         date, time = get_date_string_from_string(date_and_time, split_time=True)
 
+        text = entry["text"]
+        print(f'\u001b[33m-    \u001b[36m{date} \u001b[96m{time}{updated}{category}\u001b[0m  {record[1]}')
+
+
+
 def get_note(books_directory, book_filename, note_id: int):
     try:
         sqlite_con, sqlite_cursor = get_connection(books_directory, book_filename)
