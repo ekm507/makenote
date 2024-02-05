@@ -19,8 +19,8 @@ def get_date_string(date_and_time:datetime.datetime = None, show_jalali:bool = T
     if show_jalali == True:
         date_and_time = jdatetime.datetime.fromtimestamp(date_and_time.timestamp())
         if split_time == True:
-            jd_date = date_and_time.strftime("%a, %d %b %Y")
-            jd_time = date_and_time.strftime("%H:%M:%S")
+            jd_date = f'{date_and_time.strftime("%a, %d %b %Y")}'
+            jd_time = f'{date_and_time.strftime("%H:%M:%S")}'
             return (jd_date, jd_time)
         else:
             jd = date_and_time.strftime("%a, %d %b %Y %H:%M:%S")
@@ -159,10 +159,12 @@ def tail_show_table_with_category(books_directory, book_name, limit, show_style:
                 # replace that utf representation of نیم‌فاصله with itself
                 r[1].replace('\u200c', ' ')
                 # remove miliseconds from date and time and print a in a stylized format
-                print(f'{get_date_string_from_string(r[0])}    {r[1]}')
+                date, time = get_date_string_from_string(r[0], split_time=True)
+                print(f'{date} {time}    {r[1]}')
             
             elif show_style == 2:
-                print(f'\u001b[36m{get_date_string_from_string(r[0])}{category}\u001b[0m  {r[1]}')
+                date, time = get_date_string_from_string(r[0], split_time=True)
+                print(f'\u001b[36m{date} {time}{category}\u001b[0m  {r[1]}')
 
             # if no show style is specified
             else:
@@ -179,7 +181,7 @@ def tail_show_table(books_directory, book_name, limit, show_style:int = 2):
 
 def get_date_string_from_string(date_and_time:str, split_time:bool = False):
     date_and_time = datetime.datetime.fromisoformat(date_and_time)
-    return get_date_string(date_and_time, split_time)
+    return get_date_string(date_and_time, split_time=split_time)
 
 def show_table(books_directory, book_name, show_style:int = 2):
     tail_show_table(books_directory, book_name, limit=-1, show_style = 2)
