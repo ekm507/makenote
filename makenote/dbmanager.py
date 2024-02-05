@@ -84,6 +84,16 @@ def update_entry(books_directory, book_filename, note_id: int, note_text: str) -
             print("no such note")
             exit(1)
         metadata = json.loads(record[4].decode("utf-8"))
+
+        if "history" not in metadata.keys():
+            metadata["history"] = []
+        
+        entry = {
+            "date": record[0],
+            "text": record[1]
+        }
+        metadata["history"].append(entry)
+
         metadata["last_updated"] = date_and_time.ctime()
         metadata_encoded = bytes(json.dumps(metadata), "utf-8")
         
