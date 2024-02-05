@@ -235,7 +235,8 @@ def list_tables(books_directory):
         _, sqlite_cursor = get_connection(books_directory, book)
         metadata_encoded = sqlite_cursor.execute("select * from metadata limit 1;").fetchone()[0]
         metadata = json.loads(metadata_encoded.decode("utf-8"))
-        if metadata['version'] == "makenote V2":
+
+        if metadata['version'] == "makenote V4":
             print(f"{metadata['name']}: {metadata['description']}")
 
 def export_database_json(books_directory, book_name, output_filename:str):
