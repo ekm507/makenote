@@ -144,7 +144,7 @@ def tail_show_table_with_category(books_directory, book_name, limit, show_style:
             if category_to_show != -1 and r[3] != category_to_show:
                 continue
             i += 1
-            print(i, end="  ")
+            print(r[2], end="  ")
             category = f" \u001b[35m⭐{r[3]} " if r[3] != 0 else ""
 
             # if style number 1 is selected
