@@ -186,8 +186,7 @@ def migrate_if_needed(config_filename):
         config.write(open(config_filename, 'w'))
         print("database migration from v1.0 to v2.0 done")
 
-    
-    # migrate version 2 to 3
+    # migrate version 2 to 4
     if config['DATABASE'].getfloat('last_version') < 3.0:
         diaryFileDir = os.path.abspath(config['FILES']['diaryFileDir'].replace("~/", f'{os.getenv("HOME")}/'))
         migrate_all_version_2_if_needed(diaryFileDir)
