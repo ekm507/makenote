@@ -160,6 +160,10 @@ def migrate_all_version_2_if_needed(database_directory):
             con = sqlite3.Connection(database_filename)
             cur = con.cursor()
 
+            metadata_encoded = cur.execute("select * from metadata;").fetchone()[0]
+            metadata = json.loads(metadata_encoded.decode("utf-8"))
+            book_name = metadata["name"]
+
 
 
 def migrate_if_needed(config_filename):
