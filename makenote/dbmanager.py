@@ -11,15 +11,20 @@ import json
 # TODO: try to read config from another local dir first. then go to default file
 
 
-def get_date_string(date_and_time:datetime.datetime = None, show_jalali:bool = True):
+def get_date_string(date_and_time:datetime.datetime = None, show_jalali:bool = True, split_time:bool = False):
 
     if date_and_time is None:
         date_and_time = jdatetime.datetime.now()
 
     if show_jalali == True:
         date_and_time = jdatetime.datetime.fromtimestamp(date_and_time.timestamp())
-        jd = date_and_time.strftime("%a, %d %b %Y %H:%M:%S")
-        return f"{jd}"
+        if split_time == True:
+            jd_date = date_and_time.strftime("%a, %d %b %Y")
+            jd_time = date_and_time.strftime("%H:%M:%S")
+            return (jd_date, jd_time)
+        else:
+            jd = date_and_time.strftime("%a, %d %b %Y %H:%M:%S")
+            return f"{jd}"
     else:
         return date_and_time.ctime()
 
