@@ -245,7 +245,7 @@ def export_database_json(books_directory, book_name, output_filename:str):
             }
             all_data["records"].append(entry)
 
-        print(json.dumps(all_data, ensure_ascii=False))
+        return(json.dumps(all_data, ensure_ascii=False))
 
 
 
