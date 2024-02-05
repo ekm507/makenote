@@ -136,6 +136,8 @@ def show_note_detailed(books_directory:str, book_filename:str, note_id:int):
 
     metadata = json.loads(record[4].decode("utf-8"))
 
+    category = f" \u001b[35m⭐{r[3]} " if record[3] != 0 else ""
+
 def get_note(books_directory, book_filename, note_id: int):
     try:
         sqlite_con, sqlite_cursor = get_connection(books_directory, book_filename)
