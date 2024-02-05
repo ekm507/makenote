@@ -36,7 +36,10 @@ def print_message(message_type:str, message:list, show_style:int=2):
         if show_style == 1:
             print(f'{get_date_string()} - {table_name} - note saved!')
         elif show_style == 2:
-            print(f'\u001b[36m{note_id} - {get_date_string()}\u001b[0m - {table_name} - note saved!')
+            date, time = get_date_string(split_time=True)
+            print(f'\u001b[33m{note_id} \u001b[36m{date} \u001b[96m{time}\u001b[0m  {note_text} \u001b[33m- \u001b[36m{table_name} \u001b[33m-\u001b[96m note saved!')
+
+            # print(f'\u001b[36m{note_id} - {get_date_string()}\u001b[0m - {table_name} - note saved!')
 
 def get_connection(books_directory, book_name):
     book_filename = get_book_filename(books_directory, book_name)
@@ -164,7 +167,7 @@ def tail_show_table_with_category(books_directory, book_name, limit, show_style:
             
             elif show_style == 2:
                 date, time = get_date_string_from_string(r[0], split_time=True)
-                print(f'\u001b[36m{date} {time}{category}\u001b[0m  {r[1]}')
+                print(f'\u001b[36m{date} \u001b[96m{time}{category}\u001b[0m  {r[1]}')
 
             # if no show style is specified
             else:
