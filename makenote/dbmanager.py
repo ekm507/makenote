@@ -161,6 +161,13 @@ def tail_show_table_with_category(books_directory, book_name, limit, show_style:
             i = N - limit 
         # print them all
         for r in records:
+
+            metadata = json.loads(r[4].decode("utf-8"))
+            if "last_updated" in metadata.keys():
+                updated = " \u001b[33mU"
+            else:
+                updated = ""
+
             if category_to_show != -1 and r[3] != category_to_show:
                 continue
             i += 1
