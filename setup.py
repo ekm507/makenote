@@ -1,13 +1,22 @@
-import setuptools
-from makenote import __version__
 import os
+
+import setuptools
+
+
+def get_version():
+    base_dir = os.path.abspath(os.path.dirname(__file__))
+    with open(os.path.join(base_dir, "makenote", "__init__.py")) as f:
+        for line in f:
+            if line.startswith("__version__"):
+                return line.strip().split("=")[1].strip(" '\"")
+
 
 with open("README.md") as readme:
     long_description = readme.read()
 
 setuptools.setup(
     name="makenote",
-    version=__version__,
+    version=get_version(),
     description="command line tool for quickly writing journals",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -18,7 +27,7 @@ setuptools.setup(
     install_requires=[
         "jdatetime",
         "prompt_toolkit",
-        ],
+    ],
     classifiers=[],
     packages=["makenote"],
     package_dir={"makenote": "makenote"},
@@ -26,5 +35,5 @@ setuptools.setup(
     scripts=[
         "bin/makenote",
     ],
-    data_files = [('.', ["makenote/makenote.conf"])],
+    data_files=[(".", ["makenote/makenote.conf"])],
 )
