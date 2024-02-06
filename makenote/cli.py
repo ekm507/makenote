@@ -1,15 +1,23 @@
 import argparse
 import configparser
-import datetime
 import os
 import shutil
-import sqlite3
 import sys
 
-import jdatetime
-
-from makenote import __version__, dbmanager
-from makenote.dbmanager import *
+from makenote import __version__
+from makenote.dbmanager import (
+    add_note,
+    get_note,
+    import_database,
+    list_tables,
+    make_book,
+    merge_databases_by_name,
+    set_category,
+    show_table_with_category,
+    table_exists,
+    tail_show_table,
+    update_entry,
+)
 from makenote.migrations import migrate_if_needed
 
 # read config file
@@ -36,13 +44,14 @@ config.read(config_filename)
 diaryFileDir = os.path.abspath(
     config["FILES"]["diaryFileDir"].replace("~/", f'{os.getenv("HOME")}/')
 )
+diaryFileName = os.path.join(diaryFileDir, config["FILES"]["default_table_name"])
 
 default_table_name = config["FILES"]["default_table_name"]
 # default table name
 
 show_jalali = config["SHOW_STYLE"].getboolean("show_jalali")
 
-if sys.stdout.isatty() == True:
+if sys.stdout.isatty() is True:
     # this number is like an option for how the show record output is styled
     show_style = 2
 else:
