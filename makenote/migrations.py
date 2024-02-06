@@ -32,7 +32,6 @@ def show_table(sqlite_cursor, table_name):
         # get records from sqlite
         records = sqlite_cursor.execute(f"SELECT * FROM {table_name};")
         # print them all
-        i = 0
         records_list = []
         for r in records:
             records_list.append((r[0], r[1]))
@@ -167,16 +166,26 @@ def migrate_version_2(database_filename):
     cur = con.cursor()
 
     metadata_encoded = cur.execute("select * from metadata;").fetchone()[0]
-    metadata = json.loads(metadata_encoded.decode("utf-8"))
+    if metadata_encoded is None:
+        print("No metadata found. Skipping migration.")
+        return
+    metadata = json.loads(metadata_encoded[0].decode("utf-8"))
 
     book_name = metadata["name"]
 
     cur.execute(f"SELECT rowid FROM {book_name} order by rowid DESC LIMIT 1;")
-    n = cur.fetchone()[0]
+    result = cur.fetchone()
+    if result is None:
+        print(f"No entries in table {book_name}. Skipping migration.")
+        return
+    n = result[0]
 
     for i in range(1, n + 1):
-        cur.execute(f"""UPDATE {book_name} SET number = "{i}" LIMIT {i-1},{1};""")
+        cur.execute(f"""UPDATE {book_name} SET number = {i} WHERE rowid = {i};""")
 
+    metadata["version"] = "makenote V4"
+    metadata_encoded = bytes(json.dumps(metadata), "utf-8")
+    cur.execute("""UPDATE metadata SET metadata = ? ;""", (metadata_encoded,))
     con.commit()
 
 
@@ -189,16 +198,21 @@ def migrate_all_version_2_if_needed(database_directory):
             con = sqlite3.Connection(database_filename)
             cur = con.cursor()
 
-            metadata_encoded = cur.execute("select * from metadata;").fetchone()[0]
+            cur.execute("SELECT * FROM metadata;")
+            result = cur.fetchone()
+            if result is None:
+                print("No metadata found. Skipping migration.")
+                return
+            metadata_encoded = result[0]
             metadata = json.loads(metadata_encoded.decode("utf-8"))
-            book_name = metadata["name"]
+            # book_name = metadata["name"]
 
             if metadata["version"] == "makenote V2":
                 migrate_version_2(database_filename)
                 metadata["version"] = "makenote V4"
                 metadata_encoded = bytes(json.dumps(metadata), "utf-8")
                 cur.execute(
-                    f"""UPDATE metadata SET metadata = ? ;""", (metadata_encoded,)
+                    """UPDATE metadata SET metadata = ? ;""", (metadata_encoded,)
                 )
                 con.commit()
 
