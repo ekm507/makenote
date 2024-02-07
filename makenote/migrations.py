@@ -200,7 +200,8 @@ def migrate_all_version_2_if_needed(database_directory):
             cur.execute("SELECT * FROM metadata;")
             result = cur.fetchone()
             if result is None:
-                return
+                # Skip file if it doesn't have metadata
+                continue
             metadata_encoded = result[0]
             metadata = json.loads(metadata_encoded.decode("utf-8"))
             # book_name = metadata["name"]
