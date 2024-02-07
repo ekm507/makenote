@@ -458,7 +458,6 @@ def sql_to_csv(sqlite_cursor: sqlite3.Cursor):
     )
     # print them
     tables = [r[0] for r in records]
-    print(tables)
 
 
 def merge_databases_by_name(

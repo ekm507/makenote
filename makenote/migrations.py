@@ -167,7 +167,6 @@ def migrate_version_2(database_filename):
 
     metadata_encoded = cur.execute("select * from metadata;").fetchone()[0]
     if metadata_encoded is None:
-        print("No metadata found. Skipping migration.")
         return
     metadata = json.loads(metadata_encoded[0].decode("utf-8"))
 
@@ -176,7 +175,7 @@ def migrate_version_2(database_filename):
     cur.execute(f"SELECT rowid FROM {book_name} order by rowid DESC LIMIT 1;")
     result = cur.fetchone()
     if result is None:
-        print(f"No entries in table {book_name}. Skipping migration.")
+        # Skipping migration
         return
     n = result[0]
 
@@ -201,7 +200,6 @@ def migrate_all_version_2_if_needed(database_directory):
             cur.execute("SELECT * FROM metadata;")
             result = cur.fetchone()
             if result is None:
-                print("No metadata found. Skipping migration.")
                 return
             metadata_encoded = result[0]
             metadata = json.loads(metadata_encoded.decode("utf-8"))
