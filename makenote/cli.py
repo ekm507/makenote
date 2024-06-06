@@ -17,6 +17,7 @@ from makenote.dbmanager import (
     table_exists,
     tail_show_table,
     update_entry,
+    export_database_json
 )
 from makenote.migrations import migrate_if_needed
 
@@ -173,8 +174,7 @@ elif args.list_tables:
 elif args.create_table:
     make_book(diaryFileDir, args.create_table)
 elif args.export:
-    shutil.copy(diaryFileName, args.export)
-    print(f"exported to {os.path.realpath(args.export)}")
+    export_database_json(diaryFileDir, args.table_name, args.export)
 elif args.import_file:
     import_database(args.import_file, diaryFileName)
 elif args.merge:

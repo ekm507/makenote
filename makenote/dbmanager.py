@@ -381,7 +381,7 @@ def export_database_json(books_directory, book_name, output_filename: str):
                 }
                 all_data["records"].append(entry)
 
-        return json.dumps(all_data, ensure_ascii=False)
+        json.dump(all_data, open(output_filename, 'w'),ensure_ascii=False)
 
     # if there was an error, print error text and exit
     except sqlite3.OperationalError as error_text:
