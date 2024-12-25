@@ -168,7 +168,7 @@ def migrate_version_2(database_filename):
     metadata_encoded = cur.execute("select * from metadata;").fetchone()[0]
     if metadata_encoded is None:
         return
-    metadata = json.loads(metadata_encoded[0].decode("utf-8"))
+    metadata = json.loads(metadata_encoded.decode("utf-8"))
 
     book_name = metadata["name"]
 
