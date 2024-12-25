@@ -4,3 +4,4 @@ build/
 makenote.egg-info/
 __pycache__/
 */__pycache__/venv/*
+venv
