@@ -345,6 +345,10 @@ def make_book(books_directory, book_name):
 def get_books_list(books_directory):
     import re
 
+    # A missing databases directory (fresh setup) simply holds no notebooks.
+    if not os.path.isdir(books_directory):
+        return []
+
     books = list(
         filter(lambda x: re.fullmatch(r".*\.db", x), os.listdir(books_directory))
     )
